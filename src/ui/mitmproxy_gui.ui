@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1188</width>
+    <height>794</height>
+   </rect>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="proxy">
+       <attribute name="title">
+        <string>proxy</string>
+       </attribute>
+       <layout class="QVBoxLayout">
+        <item>
+         <layout class="QHBoxLayout" name="mode_layout">
+          <item>
+           <widget class="QGroupBox" name="mode_group">
+            <property name="minimumSize">
+             <size>
+              <width>115</width>
+              <height>173</height>
+             </size>
+            </property>
+            <property name="title">
+             <string>Operation Mode</string>
+            </property>
+            <layout class="QVBoxLayout">
+             <property name="spacing">
+              <number>9</number>
+             </property>
+             <item>
+              <widget class="QComboBox" name="mode_combo">
+               <property name="minimumContentsLength">
+                <number>0</number>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Default</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Decrypt</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Encrypt</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Both</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="port_group">
+            <property name="title">
+             <string>Port Configuration</string>
+            </property>
+            <layout class="QFormLayout">
+             <property name="formAlignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+             <property name="horizontalSpacing">
+              <number>8</number>
+             </property>
+             <property name="verticalSpacing">
+              <number>8</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>dec_Listen Port:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEdit"/>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="listen_port_input"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="upstream_label">
+               <property name="text">
+                <string>Upstream Proxy:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="upstream_input"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="listen_port_label">
+               <property name="text">
+                <string>enc_Listen Port:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="encrypt_params_label">
+               <property name="text">
+                <string>加密参数:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="encrypt_params_input">
+               <property name="placeholderText">
+                <string>输入需要加密的字段，多个字段用逗号分隔</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="dec_key_label">
+               <property name="text">
+                <string>解密密钥:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <layout class="QHBoxLayout">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <item>
+                <widget class="QLineEdit" name="dec_key_input">
+                 <property name="placeholderText">
+                  <string>输入解密密钥</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="dec_iv_label">
+                 <property name="text">
+                  <string>向量:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="dec_iv_input">
+                 <property name="placeholderText">
+                  <string>输入解密IV值</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="enc_key_label">
+               <property name="text">
+                <string>加密密钥:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <layout class="QHBoxLayout">
+               <property name="spacing">
+                <number>8</number>
+               </property>
+               <item>
+                <widget class="QLineEdit" name="enc_key_input">
+                 <property name="placeholderText">
+                  <string>输入加密密钥</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="enc_iv_label">
+                 <property name="text">
+                  <string>向量:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="enc_iv_input">
+                 <property name="placeholderText">
+                  <string>输入加密IV值</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="control_layout">
+          <item>
+           <widget class="QPushButton" name="intercept_btn">
+            <property name="text">
+             <string>Intercept Off</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>../../resource/icon/开关-关.png</normaloff>../../resource/icon/开关-关.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="forward_btn">
+            <property name="text">
+             <string>Forward</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="drop_btn">
+            <property name="text">
+             <string>Drop</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="start_btn">
+            <property name="text">
+             <string>Start Proxy</string>
+            </property>
+              <property name="visible">
+               <bool>false</bool> <!-- 设置为不可见 -->
+              </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="clear_log_button">
+            <property name="text">
+             <string>清空日志</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTabWidget" name="main_tabs">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_intercept">
+           <attribute name="title">
+            <string>Intercept</string>
+           </attribute>
+           <layout class="QVBoxLayout">
+            <item>
+             <widget class="QSplitter" name="splitter">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <widget class="QTableWidget" name="packet_table">
+               <property name="rowCount">
+                <number>0</number>
+               </property>
+               <property name="columnCount">
+                <number>7</number>
+               </property>
+               <column>
+                <property name="text">
+                 <string>Time</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Type</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Direction</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Method</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>URL</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Status code</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Length</string>
+                </property>
+               </column>
+              </widget>
+              <widget class="QTextEdit" name="packet_detail">
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+               <property name="placeholderText">
+                <string>Select a packet to view details...</string>
+               </property>
+              </widget>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_history">
+           <attribute name="title">
+            <string>HTTP History</string>
+           </attribute>
+           <layout class="QVBoxLayout">
+            <item>
+             <widget class="QTableWidget" name="history_table">
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="autoScrollMargin">
+               <number>16</number>
+              </property>
+              <property name="rowCount">
+               <number>0</number>
+              </property>
+              <property name="columnCount">
+               <number>12</number>
+              </property>
+              <column>
+               <property name="text">
+                <string>#</string>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                </font>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Method</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Host</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Url</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Params</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Length</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>MIME type</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Extension</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Title</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Ip</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Time</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignTop</set>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Listen port</string>
+               </property>
+               <property name="textAlignment">
+                <set>AlignLeading|AlignVCenter</set>
+               </property>
+              </column>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="script">
+       <attribute name="title">
+        <string>script</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="scriptLayout">
+        <item>
+         <widget class="QTabWidget" name="script_tabs">
+          <widget class="QWidget" name="encrypt_tab">
+           <attribute name="title">
+            <string>加密脚本</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="encrypt_layout">
+            <item>
+             <layout class="QHBoxLayout" name="encrypt_combo_layout">
+              <item>
+               <widget class="QLabel" name="encrypt_label">
+                <property name="text">
+                 <string>加密脚本:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="encrypt_script_combo"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="encrypt_script_content">
+              <property name="font">
+               <font>
+                <pointsize>22</pointsize>
+               </font>
+              </property>
+              <property name="placeholderText">
+               <string>选择加密脚本查看内容...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="decrypt_tab">
+           <attribute name="title">
+            <string>解密脚本</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="decrypt_layout">
+            <item>
+             <layout class="QHBoxLayout" name="decrypt_combo_layout">
+              <item>
+               <widget class="QLabel" name="decrypt_label">
+                <property name="text">
+                 <string>解密脚本:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="decrypt_script_combo"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="decrypt_script_content">
+              <property name="font">
+               <font>
+                <pointsize>22</pointsize>
+               </font>
+              </property>
+              <property name="placeholderText">
+               <string>选择解密脚本查看内容...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="both_tab">
+           <attribute name="title">
+            <string>双向脚本</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="both_layout">
+            <item>
+             <layout class="QHBoxLayout" name="both_combo_layout">
+              <item>
+               <widget class="QLabel" name="both_label">
+                <property name="text">
+                 <string>双向脚本:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="both_script_combo"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="both_script_content">
+              <property name="font">
+               <font>
+                <pointsize>22</pointsize>
+               </font>
+              </property>
+              <property name="placeholderText">
+               <string>选择双向脚本查看内容...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="hook_tab">
+           <attribute name="title">
+            <string>Hook脚本</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="hook_layout">
+            <item>
+             <layout class="QHBoxLayout" name="hook_combo_layout">
+              <item>
+               <widget class="QLabel" name="hook_label">
+                <property name="text">
+                 <string>Hook脚本:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="hook_script_combo"/>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="hook_script_content">
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="placeholderText">
+               <string>选择Hook脚本查看内容...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Theme</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="tab_layout">
+        <item>
+         <layout class="QHBoxLayout" name="theme_layout" stretch="0,0,0,8">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetFixedSize</enum>
+          </property>
+          <item>
+           <widget class="QLabel" name="theme_lable1">
+            <property name="text">
+             <string>Select</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="theme_label2">
+            <property name="text">
+             <string>Theme:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>25</width>
+              <height>66</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QComboBox" name="theme_combo"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTextBrowser" name="textBrowser">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Microsoft YaHei UI'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                                                        &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                                                         &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Create                                                        by:&lt;/span&gt;                                                         &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                                                         &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Lingdu&lt;/span&gt;                                                                                                                &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                                                         &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;此工具用于解决渗透测试中加解密的难题，实现全自动解密数据包，然后发到burp中，让burp中只出现明文的数据。&lt;/span&gt;                                                                                                                &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;                                                     &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1188</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>关于</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
