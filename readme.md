@@ -1,4 +1,3 @@
-@ -1,163 +0,0 @@
 # Mitmproxy GUI
 
 一个基于 Mitmproxy 的 GUI 工具，支持多种加密算法的请求拦截和修改。
@@ -81,25 +80,21 @@ python main.py
 ## 支持的加密算法
 
 ### RSA
-
 - 支持公钥加密/私钥解密
 - 支持 .pem 格式密钥文件
 - 支持 Base64 格式密钥
 
 ### DES
-
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### AES
-
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### Base64
-
 - 支持标准 Base64 编码/解码
 - 支持 URL 安全的 Base64 编码/解码
 
@@ -139,25 +134,21 @@ python main.py
 ## 支持的加密算法
 
 ### RSA
-
 - 支持公钥加密/私钥解密
 - 支持 .pem 格式密钥文件
 - 支持 Base64 格式密钥
 
 ### DES
-
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### AES
-
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### Base64
-
 - 支持标准 Base64 编码/解码
 - 支持 URL 安全的 Base64 编码/解码
 
