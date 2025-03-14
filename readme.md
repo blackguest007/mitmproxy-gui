@@ -57,6 +57,10 @@ python main.py
 5. 输入需要处理的字段名（多个字段用逗号分隔）
 6. 输入密钥和 IV（如果需要）
 
+![image-20250314154401242](/Users/lingdu/Library/Application Support/typora-user-images/image-20250314154401242.png)
+
+![image-20250314154438533](/Users/lingdu/Library/Application Support/typora-user-images/image-20250314154438533.png)
+
 ### 加密模式
 
 - 监听指定端口
@@ -80,21 +84,25 @@ python main.py
 ## 支持的加密算法
 
 ### RSA
+
 - 支持公钥加密/私钥解密
 - 支持 .pem 格式密钥文件
 - 支持 Base64 格式密钥
 
 ### DES
+
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### AES
+
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### Base64
+
 - 支持标准 Base64 编码/解码
 - 支持 URL 安全的 Base64 编码/解码
 
@@ -134,21 +142,25 @@ python main.py
 ## 支持的加密算法
 
 ### RSA
+
 - 支持公钥加密/私钥解密
 - 支持 .pem 格式密钥文件
 - 支持 Base64 格式密钥
 
 ### DES
+
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### AES
+
 - 支持 ECB/CBC 模式
 - 支持自定义 IV（CBC 模式）
 - 支持 PKCS7 填充
 
 ### Base64
+
 - 支持标准 Base64 编码/解码
 - 支持 URL 安全的 Base64 编码/解码
 
