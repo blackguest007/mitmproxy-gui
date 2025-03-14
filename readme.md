@@ -56,10 +56,9 @@ python main.py
 4. 设置上游代理端口（默认 8080）
 5. 输入需要处理的字段名（多个字段用逗号分隔）
 6. 输入密钥和 IV（如果需要）
+<img width="934" alt="image" src="https://github.com/user-attachments/assets/bdf4f8d9-3f13-4e40-8215-48802e85ce81" />
+<img width="935" alt="image" src="https://github.com/user-attachments/assets/748f4f5a-54bf-43a2-95ff-5f5d3cae4934" />
 
-![image-20250314154401242](/Users/lingdu/Library/Application Support/typora-user-images/image-20250314154401242.png)
-
-![image-20250314154438533](/Users/lingdu/Library/Application Support/typora-user-images/image-20250314154438533.png)
 
 ### 加密模式
 
