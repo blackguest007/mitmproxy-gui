@@ -362,22 +362,26 @@ def start_proxy(window, key=None, iv=None):
 
                 # 如果是 RSA 模式，处理密钥
                 if 'rsa.py' in both_script.lower():
-                   
-                    pem_path, error = handle_rsa_keys(window, "Both", key['encrypt'])  # 使用 Both 模式
-                    if error:
-                        window.packet_detail.append(ErrorMessages.INVALID_MODE)
-                        return
-                    key['encrypt'] = pem_path  # 使用处理后的密钥路径
-                    print(f"加密密钥已保存到: {pem_path}")  # 添加调试日志
+                    # 处理加密密钥（公钥）
+                    if key['encrypt']:
+                        pem_path, error = handle_rsa_keys(window, "Both", key['encrypt'])
+                        if error:
+                            window.packet_detail.append(ErrorMessages.INVALID_MODE)
+                            return
+                        key['encrypt'] = pem_path
+                        print(f"加密密钥（公钥）已保存到: {pem_path}")
 
-                    # 处理解密密钥
-                  
-                    pem_path, error = handle_rsa_keys(window, "Both", key['decrypt'])  # 使用 Both 模式
-                    if error:
-                        window.packet_detail.append(ErrorMessages.INVALID_MODE)
-                        return
-                    key['decrypt'] = pem_path  # 使用处理后的密钥路径
-                    print(f"解密密钥已保存到: {pem_path}")  # 添加调试日志
+                    # 处理解密密钥（私钥）
+                    if key['decrypt']:
+                        # 确保私钥内容包含正确的 PEM 头部
+                        if not "-----BEGIN RSA PRIVATE KEY-----" in key['decrypt']:
+                            key['decrypt'] = f"-----BEGIN RSA PRIVATE KEY-----\n{key['decrypt']}\n-----END RSA PRIVATE KEY-----"
+                        pem_path, error = handle_rsa_keys(window, "Both", key['decrypt'])
+                        if error:
+                            window.packet_detail.append(ErrorMessages.INVALID_MODE)
+                            return
+                        key['decrypt'] = pem_path
+                        print(f"解密密钥（私钥）已保存到: {pem_path}")
                 else:
                     # 非RSA脚本，直接使用密钥内容
                     print(f"非RSA脚本，使用原始密钥内容")

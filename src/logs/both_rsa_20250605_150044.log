@@ -1,7 +1,0 @@
-[2025-06-05 15:00:45] #1 URL: http://jsencrypt/login_check.php
-模式: encrypt
-字段: password
-原始值: m=6&username=admin&password=123456
-加密值: m=6&username=admin&password=bKCHJjc+iEysIRVD8Eb5cCTjVgoq3SKk726K2vkt5NpfeJ/cbytskHozQwK+WmbJ2oIvYll01/+PQyFdEiYvACNvS9KZJdDc0AInoMyqO7ZEgd0QZf5Uej3hC0geV+cOpZKIl/eNFPAG4ZQ+rh5qQplMjn+RrbqXG2Vk/Qr/z7Q=
-==================================================
-

@@ -416,7 +416,7 @@ class ScriptLoader:
                     # 使用 bothTools 目录下的密钥文件
                     both_dir = os.path.join(self.root_path, "scripts", "bothTools").replace("\\", "/")
                     encrypt_command = f'mitmdump -p {encrypt_port} -s "{full_script_path}" --ssl-insecure {field_param} public_key={both_dir}/rsa_public_key.pem'
-                    decrypt_command = f'mitmdump -p {decrypt_port} -s "{full_script_path}" --ssl-insecure {field_param} private_key={both_dir}/rsa_private_key.pem'
+                    decrypt_command = f'mitmdump -p {decrypt_port} -s "{full_script_path}" {upstream} --ssl-insecure {field_param} private_key={both_dir}/rsa_private_key.pem'
                     print("+++++++++++++++++++++++++++++++++++")
                     # 打印命令和路径信息，但不显示私钥内容
                     print(f"生成的加密命令: {encrypt_command}")
@@ -426,7 +426,7 @@ class ScriptLoader:
                 else:
                     # 非RSA脚本，添加普通的key和iv参数
                     encrypt_command = f'mitmdump -p {encrypt_port} -s "{full_script_path}" --ssl-insecure {field_param} key="{encrypt_key}" iv="{encrypt_iv}"'
-                    decrypt_command = f'mitmdump -p {decrypt_port} -s "{full_script_path}" --ssl-insecure {field_param} key="{decrypt_key}" iv="{decrypt_iv}"'
+                    decrypt_command = f'mitmdump -p {decrypt_port} -s "{full_script_path}" {upstream} --ssl-insecure {field_param} key="{decrypt_key}" iv="{decrypt_iv}"'
                     
                     # 打印命令信息
                     print(f"生成的加密命令: {encrypt_command}")

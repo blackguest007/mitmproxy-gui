@@ -20,9 +20,6 @@ def format_pem_key(key_content: str, is_private: bool = False) -> str:
     Returns:
         str: PEM 格式的密钥内容
     """
-    # 移除所有空白字符
-    key_content = ''.join(key_content.split())
-    
     # 检查是否已经是 PEM 格式
     if is_private:
         if "-----BEGIN RSA PRIVATE KEY-----" in key_content and "-----END RSA PRIVATE KEY-----" in key_content:
@@ -36,6 +33,9 @@ def format_pem_key(key_content: str, is_private: bool = False) -> str:
         # 添加 PEM 头部和尾部
         header = "-----BEGIN PUBLIC KEY-----"
         footer = "-----END PUBLIC KEY-----"
+    
+    # 移除所有空白字符
+    key_content = ''.join(key_content.split())
     
     # 确保密钥内容是有效的 Base64
     try:
@@ -72,18 +72,13 @@ def handle_rsa_keys(window: QMainWindow, mode: str, key: str) -> Tuple[Optional[
             print("密钥为空")  # 添加调试日志
             return None, "密钥不能为空"
 
-        # 根据模式选择正确的目录
+        # 根据模式选择正确的目录和密钥类型
         if mode == "Both":
-            # 在 Both 模式下，同时保存到 bothTools 目录
+            # 在 Both 模式下，保存到 bothTools 目录
             script_dir = os.path.join(window.script_loader.root_path, "scripts", "bothTools")
-            # 在 Both 模式下，根据密钥内容判断
-            if "PRIVATE KEY" in key.upper() or "RSA PRIVATE KEY" in key.upper():
-                is_private = True
-            elif "PUBLIC KEY" in key.upper() or "RSA PUBLIC KEY" in key.upper():
-                is_private = False
-            else:
-                # 如果无法从内容判断，则根据是加密还是解密密钥来判断
-                is_private = mode == "Decrypt"
+            # 根据密钥内容判断是公钥还是私钥
+            is_private = "PRIVATE KEY" in key
+            print(f"Both模式: {'私钥' if is_private else '公钥'}")
         else:
             if mode == "Encrypt":
                 script_dir = os.path.join(window.script_loader.root_path, "scripts", "encryptTools")
@@ -93,10 +88,10 @@ def handle_rsa_keys(window: QMainWindow, mode: str, key: str) -> Tuple[Optional[
                 is_private = True
             
         print(f"选择的目录: {script_dir}, is_private: {is_private}")  # 添加调试日志
-        
+
         # 确保目录存在
         os.makedirs(script_dir, exist_ok=True)
-        
+
         # 根据模式选择保存的文件名
         pem_file_path = os.path.join(script_dir, "rsa_public_key.pem" if not is_private else "rsa_private_key.pem")
 
