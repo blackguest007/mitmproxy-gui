@@ -1,0 +1,32 @@
+SM4加密前的值: {"username":"user1"}UTF-8编码后字节数: 20PKCS7填充后字节数: 32SM4加密后字节数: 64截取后字节数: 32SM4加密后: TEQFyVdJjZjb1UYZa5+afiD1UBKBQW1nRWN5ncvXpr8=[2025-06-28 16:41:36.913] #1 URL: http://127.0.0.1/api/sm4-cbc/getUserInfo
+方向: 请求
+模式: encrypt
+字段: data
+原始值: {"data":{"username":"user1"}}
+处理值: {"data":"TEQFyVdJjZjb1UYZa5+afiD1UBKBQW1nRWN5ncvXpr8="}
+==================================================
+
+SM4加密前的值: X8+c2eCEXvMK9gLIYIrnTmKTIqGx8qqQPpEO/cKfh0kQ0KnH6G0M0i2GQjrwtcp8BUoYroktbwPGyvb2ewVtkw==UTF-8编码后字节数: 88PKCS7填充后字节数: 96SM4加密后字节数: 128截取后字节数: 32SM4加密后: 77g6Hv0SMaKmmLyCXLzwW/8Kzwo4Qt++gNYdjG2/xOg=[2025-06-28 16:41:36.921] #2 URL: http://127.0.0.1/api/sm4-cbc/getUserInfo
+方向: 响应
+模式: encrypt
+字段: data
+原始值: {"data":"X8+c2eCEXvMK9gLIYIrnTmKTIqGx8qqQPpEO/cKfh0kQ0KnH6G0M0i2GQjrwtcp8BUoYroktbwPGyvb2ewVtkw=="}
+处理值: {"data":"77g6Hv0SMaKmmLyCXLzwW/8Kzwo4Qt++gNYdjG2/xOg="}
+==================================================
+
+SM4加密前的值: {"username":"user1"}UTF-8编码后字节数: 20PKCS7填充后字节数: 32SM4加密后字节数: 64截取后字节数: 32SM4加密后: TEQFyVdJjZjb1UYZa5+afiD1UBKBQW1nRWN5ncvXpr8=[2025-06-28 16:49:05.882] #3 URL: http://127.0.0.1/api/sm4-cbc/getUserInfo
+方向: 请求
+模式: encrypt
+字段: data
+原始值: data={"username":"user1"}
+处理值: data=TEQFyVdJjZjb1UYZa5+afiD1UBKBQW1nRWN5ncvXpr8=
+==================================================
+
+[2025-06-28 16:49:05.888] #4 URL: http://127.0.0.1/api/sm4-cbc/getUserInfo
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Internal Server Error
+处理值: Internal Server Error
+==================================================
+

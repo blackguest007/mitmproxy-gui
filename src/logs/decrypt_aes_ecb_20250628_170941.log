@@ -1,0 +1,64 @@
+[2025-06-28 17:10:03.935] #1 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 请求
+模式: decrypt
+字段: data
+原始值: {"data":"6q+jD7T3ADydfUl/JsF9agHBBsYU1FPKM7m9AZSPBlQ="}
+处理值: {"data":{"username":"user1"}}
+==================================================
+
+[2025-06-28 17:10:03.941] #2 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 响应
+模式: decrypt
+字段: response
+原始值: Internal Server Error
+处理值: Internal Server Error
+==================================================
+
+JSON解析失败: Expecting value: line 1 column 1 (char 0)AES解密错误: Data must be aligned to block boundary in ECB mode[2025-06-28 17:10:33.886] #3 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 请求
+模式: decrypt
+字段: data
+原始值: data=IsocrZhnwPnrJ%2FBgMu5l0cL8nOCULEMhulbTNaskR3rpnfli
+处理值: data=IsocrZhnwPnrJ/BgMu5l0cL8nOCULEMhulbTNaskR3rpnfli
+==================================================
+
+[2025-06-28 17:10:33.895] #2 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 响应
+模式: decrypt
+字段: response
+原始值: Internal Server Error
+处理值: Internal Server Error
+==================================================
+
+[2025-06-28 17:12:00.290] #4 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 请求
+模式: decrypt
+字段: data
+原始值: data=6q%2BjD7T3ADydfUl%2FJsF9agHBBsYU1FPKM7m9AZSPBlQ%3D
+处理值: data={"username":"user1"}
+==================================================
+
+[2025-06-28 17:12:00.295] #2 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 响应
+模式: decrypt
+字段: response
+原始值: Internal Server Error
+处理值: Internal Server Error
+==================================================
+
+[2025-06-28 17:13:09.556] #5 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 请求
+模式: decrypt
+字段: data
+原始值: data=6q+jD7T3ADydfUl%2FJsF9agHBBsYU1FPKM7m9AZSPBlQ%3D
+处理值: data={"username":"user1"}
+==================================================
+
+[2025-06-28 17:13:09.561] #2 URL: http://127.0.0.1/api/aes-ecb/getUserInfo
+方向: 响应
+模式: decrypt
+字段: response
+原始值: Internal Server Error
+处理值: Internal Server Error
+==================================================
+

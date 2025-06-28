@@ -19,12 +19,7 @@ warnings.filterwarnings("ignore", "sipPyTypeDict() is deprecated")
 from controllers.button_controller.button import setup_buttons
 from ui.highlighter.python_highlighter import PythonHighlighter
 from controllers.mode.mode import setup_mode_connections, update_mode
-
-from controllers.thread.mitmproxy_thread import MitmProxyThread
-from controllers.network import MyAddon, packet_queue
-from controllers.network.shared import packet_queue
 from utils.script_loader import ScriptLoader
-
 from themes.theme import get_themes, init_themes
 from ui.highlighter.log_highlighter import LogHighlighter
 
@@ -34,7 +29,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # 设置窗口标题
-        self.setWindowTitle("mitmproxy-gui V1.0.1 Created by @LingDu")
+        self.setWindowTitle("mitmproxy-gui V1.0.4 Created by @LingDu")
 
         # 初始化属性
         self.mitm_threads = []  # 用于存储当前运行的线程

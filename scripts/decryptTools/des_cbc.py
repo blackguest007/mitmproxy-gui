@@ -1,8 +1,8 @@
 """
-DES-CBC 解密脚本-已测试√√
+DES-CBC 解密脚本-已测试√√√
 
 使用方法:
-    mitmdump -p 8888 -s des_cbc.py --ssl-insecure field=password key=your_key iv=your_iv
+    mitmdump -p 8888 -s des_cbc.py --mode upstream:http://127.0.0.1:8080 --ssl-insecure field=password key=your_key iv=your_iv
 
 参数说明:
     field: 需要处理的字段，多个字段用逗号分隔
@@ -16,374 +16,139 @@ DES-CBC 解密脚本-已测试√√
     4. 解密前的数据需要是Base64编码
 """
 
-import sys
-from mitmproxy import http
-from mitmproxy.script import concurrent
-import json
-from urllib.parse import parse_qs, urlencode, quote, unquote
-import threading
-import queue
-import time
 import os
-from datetime import datetime
+import sys
+from typing import Dict, Any, Tuple
+from mitmproxy import http
 import base64
-import signal
-from typing import Dict, List, Tuple, Optional, Any, Union
+from urllib.parse import unquote
 from Crypto.Cipher import DES
 from Crypto.Util.Padding import unpad
 
-# 全局停止标志
-STOP_EVENT = threading.Event()
+# 添加父目录到 Python 路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
-# 日志配置
-LOG_CONFIG = {
-    'batch_size': 50,  # 批处理大小
-    'flush_interval': 1.0,  # 文件刷新间隔（秒）
-    'queue_timeout': 0.1,  # 队列获取超时时间
-    'sleep_interval': 0.01,  # 空闲时睡眠时间
-}
+from common.utils import get_processing_fields, is_valid_base64
+from common.interceptor import BaseInterceptor
 
-# 全局日志计数器
-LOG_COUNTER = 0
-LOG_COUNTER_LOCK = threading.Lock()
-# 用于存储数据包的序号
-PACKET_COUNTERS = {}
-PACKET_COUNTERS_LOCK = threading.Lock()
-
-def get_packet_number(url: str, content: str) -> int:
-    """获取数据包的序号，相同的数据包返回相同的序号"""
-    global LOG_COUNTER, PACKET_COUNTERS
-    # 使用URL和内容的哈希值作为键，避免存储过长的字符串
-    packet_key = hash(f"{url}:{content}")
-    
-    with PACKET_COUNTERS_LOCK:
-        if packet_key not in PACKET_COUNTERS:
-            with LOG_COUNTER_LOCK:
-                LOG_COUNTER += 1
-                PACKET_COUNTERS[packet_key] = LOG_COUNTER
-        return PACKET_COUNTERS[packet_key]
-
-def get_fields() -> List[str]:
-    """从命令行参数获取配置"""
-    for arg in sys.argv:
-        if arg.startswith('field='):
-            return [field.strip() for field in arg.replace('field=', '').split(',') if field.strip()]
-    return ['password']  # 默认字段
-
-def get_des_config() -> Tuple[str, str]:
-    """获取DES配置"""
-    key = None
-    iv = None
-    for arg in sys.argv:
-        if arg.startswith('key='):
-            key = arg.replace('key=', '').strip()
-        elif arg.startswith('iv='):
-            iv = arg.replace('iv=', '').strip()
-    
-    if not key:
-        raise ValueError("必须提供key参数")
-    if not iv:
-        raise ValueError("必须提供iv参数")
-    
-    # 直接使用 UTF-8 编码，与 CryptoJS.enc.Utf8.parse() 保持一致
-    key_bytes = key.encode('utf-8')
-    iv_bytes = iv.encode('utf-8')
-    
-    # 验证密钥和IV长度
-    if len(key_bytes) != 8:
-        raise ValueError(f"无效的DES密钥长度: {len(key_bytes)}字节，应为8字节")
-    if len(iv_bytes) != 8:
-        raise ValueError(f"无效的IV长度: {len(iv_bytes)}字节，应为8字节")
-    
-    # 添加调试日志
-    print(f"密钥原始值: {key}")
-    print(f"密钥字节: {key_bytes}")
-    print(f"IV原始值: {iv}")
-    print(f"IV字节: {iv_bytes}")
-    
-    return key, iv
-
-def get_log_filename(fields: List[str]) -> str:
-    """生成日志文件名"""
-    return f"des_cbc_{'_'.join(fields)}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
-
-class AsyncLogger:
-    """异步日志处理器"""
-    _instance = None
-    _lock = threading.Lock()
-
-    def __new__(cls):
-        with cls._lock:
-            if cls._instance is None:
-                cls._instance = super(AsyncLogger, cls).__new__(cls)
-                cls._instance._initialized = False
-            return cls._instance
-
-    def __init__(self):
-        if self._initialized:
-            return
-            
-        with self._lock:
-            if self._initialized:
-                return
-                
-            self.log_queue = queue.Queue(maxsize=1000)  # 设置较大的队列大小
-            self.running = True
-            self.thread = threading.Thread(target=self._process_logs, daemon=True)
-            self.thread.start()
-            
-            # 创建日志目录
-            self.log_dir = "logs"
-            if not os.path.exists(self.log_dir):
-                os.makedirs(self.log_dir)
-                
-            # 创建日志文件，使用decrypt前缀
-            script_name = os.path.splitext(os.path.basename(__file__))[0]
-            self.log_file = os.path.join(self.log_dir, f"decrypt_{script_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
-            self._initialized = True
-            self.fields = []  # 初始化字段列表
-            self.last_flush_time = time.time()  # 添加最后刷新时间记录
-
-    def _format_log_message(self, url: str, field: str, original: str, processed: str) -> str:
-        """格式化日志消息"""
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        packet_number = get_packet_number(url, original)
-        
-        return (
-            f"[{timestamp}] #{packet_number} URL: {url}\n"
-            f"字段: {field}\n"
-            f"原始值: {original}\n"
-            f"解密值: {processed}\n"
-            f"{'='*50}\n"
-        )
-
-    def _process_logs(self):
-        """处理日志队列"""
-        while self.running:
-            try:
-                # 非阻塞方式获取日志，设置较短的超时时间
-                log_entry = self.log_queue.get(timeout=0.01)
-                if log_entry:
-                    flow, comment = log_entry
-                    # 立即写入文件
-                    with open(self.log_file, 'a', encoding='utf-8') as f:
-                        f.write(comment + '\n')
-                        f.flush()  # 强制刷新文件缓冲区
-                        os.fsync(f.fileno())  # 确保写入磁盘
-            except queue.Empty:
-                # 队列为空时短暂休眠
-                time.sleep(0.001)  # 减少休眠时间
-            except Exception as e:
-                print(f"日志处理错误: {str(e)}")
-
-    def log(self, flow, comment):
-        """添加日志到队列"""
-        try:
-            # 使用非阻塞方式添加日志
-            self.log_queue.put_nowait((flow, comment))
-        except queue.Full:
-            # 队列满时，立即处理一些日志
-            try:
-                # 处理一条日志
-                log_entry = self.log_queue.get_nowait()
-                flow, comment = log_entry
-                with open(self.log_file, 'a', encoding='utf-8') as f:
-                    f.write(comment + '\n')
-                    f.flush()
-                    os.fsync(f.fileno())
-                # 然后添加新日志
-                self.log_queue.put_nowait((flow, comment))
-            except Exception as e:
-                print(f"日志队列处理错误: {str(e)}")
-
-    def stop(self):
-        """停止日志处理"""
-        self.running = False
-        if self.thread and self.thread.is_alive():
-            self.thread.join(timeout=1.0)
-
-class DesCbcDecryptInterceptor:
+class DesCbcDecryptInterceptor(BaseInterceptor):
     """DES-CBC 解密拦截器"""
     
-    def __init__(self, decryption_fields: List[str], key: str, iv: str):
-        self.decryption_fields = decryption_fields
-        self.key = key.encode('utf-8')
-        self.iv = iv.encode('utf-8')
-        self._lock = threading.Lock()
-        self.logger = AsyncLogger()
-        self._initialized = True  # 添加初始化标志
-
-    def decrypt_value(self, encrypted_text: str, url: str, field: str) -> str:
-        """解密单个值"""
-        if not hasattr(self, '_initialized'):  # 检查是否已初始化
-            return encrypted_text
-            
-        try:
-            # 创建新的cipher实例
-            cipher = DES.new(self.key, DES.MODE_CBC, self.iv)
-            
-            # 解密数据
-            encrypted_data = base64.b64decode(encrypted_text)
-            decrypted_data = cipher.decrypt(encrypted_data)
-            unpadded_data = unpad(decrypted_data, DES.block_size)
-            decrypted_text = unpadded_data.decode('utf-8')
-            
-            return decrypted_text
-        except Exception as e:
-            error_msg = f"解密失败: {str(e)}"
-            raise
-
-    def process_json_data(self, data: Dict[str, Any], url: str) -> Tuple[Dict[str, Any], bool]:
-        """处理JSON数据"""
-        if not hasattr(self, '_initialized'):  # 检查是否已初始化
-            return data, False
-            
-        modified = False
-        # 使用 separators 参数去除多余的空格
-        original_data = json.dumps(data, separators=(',', ':'), ensure_ascii=False)
+    def __init__(self):
+        """初始化DES-CBC解密拦截器"""
+        script_name = os.path.splitext(os.path.basename(__file__))[0]
+        super().__init__(
+            script_name=script_name,
+            mode="decrypt",
+            processing_fields=get_processing_fields(),
+            process_func=self.decrypt_value
+        )
         
-        for field in self.decryption_fields:
-            if field in data and isinstance(data[field], str):
+        # 获取DES配置
+        self.key, self.iv = self._get_des_config()
+
+    def _get_des_config(self) -> Tuple[bytes, bytes]:
+        """获取DES配置"""
+        key = None
+        iv = None
+        for arg in sys.argv:
+            if arg.startswith('key='):
+                key = arg.replace('key=', '').strip()
+            elif arg.startswith('iv='):
+                iv = arg.replace('iv=', '').strip()
+        
+        if not key:
+            raise ValueError("必须提供key参数")
+        if not iv:
+            raise ValueError("必须提供iv参数")
+        
+        # 直接转换为字节
+        key_bytes = key.encode('utf-8')
+        iv_bytes = iv.encode('utf-8')
+        
+        # 验证密钥长度（DES标准长度）
+        if len(key_bytes) != 8:
+            raise ValueError(f"无效的DES密钥长度: {len(key_bytes)}字节，应为8字节")
+        
+        # 验证IV长度（DES标准长度）
+        if len(iv_bytes) != 8:
+            raise ValueError(f"无效的IV长度: {len(iv_bytes)}字节，应为8字节")
+        
+        return key_bytes, iv_bytes
+
+    def decrypt_value(self, value: str, url: str, field: str, full_json: Dict[str, Any] = None, form_data: str = "") -> str:
+        """
+        解密DES-CBC加密的值
+        
+        Args:
+            value: 要解密的值
+            url: 请求URL
+            field: 字段名
+            full_json: 完整的JSON数据（如果是JSON格式）
+            form_data: 完整的表单数据（如果是表单格式）
+            
+        Returns:
+            str: 解密后的值
+        """
+        try:
+            # 1. 处理表单数据中的空格（将空格替换回+号）
+            if form_data:
+                value = value.replace(' ', '+')
+            
+            # 2. 检查是否需要URL解码
+            if '%' in value or '+' in value:
+                value = unquote(value)
+            
+            # 3. 检查是否是有效的Base64编码
+            if not is_valid_base64(value):
+                self.logger.log(None, f"无效的Base64编码: {value}")
+                return value
+                
+            # 4. Base64解码
+            try:
+                encrypted_data = base64.b64decode(value)
+            except Exception as e:
+                self.logger.log(None, f"Base64解码错误: {str(e)}")
+                return value
+            
+            # 5. DES-CBC解密
+            try:
+                cipher = DES.new(self.key, DES.MODE_CBC, self.iv)
+                decrypted_padded = cipher.decrypt(encrypted_data)
+                
+                # 检查是否需要去填充
                 try:
-                    # 保存原始加密值
-                    original_encrypted = data[field]
+                    decrypted_data = unpad(decrypted_padded, DES.block_size)
+                except ValueError:
+                    # 如果去填充失败，说明数据可能没有填充，直接使用解密后的数据
+                    decrypted_data = decrypted_padded
                     
-                    # 解密数据
-                    decrypted_value = self.decrypt_value(data[field], url, field)
-                    try:
-                        # 尝试将解密后的值解析为JSON
-                        data[field] = json.loads(decrypted_value)
-                    except json.JSONDecodeError:
-                        data[field] = decrypted_value
-                    modified = True
-                    
-                    # 记录日志，显示原始加密值和解密后的值
-                    self.logger.log(None, self.logger._format_log_message(
-                        url,
-                        field,
-                        json.dumps({field: original_encrypted}, ensure_ascii=False),
-                        json.dumps({field: data[field]}, ensure_ascii=False)
-                    ))
-                except Exception as e:
-                    # 记录解密失败
-                    self.logger.log(None, self.logger._format_log_message(
-                        url,
-                        field,
-                        json.dumps({field: data[field]}, ensure_ascii=False),
-                        json.dumps({field: f"解密失败: {str(e)}"}, ensure_ascii=False)
-                    ))
-                    continue
-                    
-        return data, modified
-
-    def process_form_data(self, form_data: str, url: str) -> Tuple[str, bool]:
-        """处理表单数据"""
-        if not hasattr(self, '_initialized'):  # 检查是否已初始化
-            return form_data, False
+            except Exception as e:
+                self.logger.log(None, f"DES-CBC解密错误: {str(e)}")
+                return value
             
-        try:
-            parsed_data = parse_qs(form_data, keep_blank_values=True)
-            modified = False
-            
-            for field in self.decryption_fields:
-                if field in parsed_data:
-                    try:
-                        # 保存原始加密值
-                        original_encrypted = parsed_data[field][0]
-                        
-                        # 解密数据
-                        decrypted_value = self.decrypt_value(original_encrypted, url, field)
-                        parsed_data[field] = [decrypted_value]
-                        modified = True
-                        
-                        # 记录日志，显示原始加密值和解密后的值
-                        try:
-                            decrypted_json = json.loads(decrypted_value)
-                            self.logger.log(None, self.logger._format_log_message(
-                                url,
-                                field,
-                                json.dumps({field: original_encrypted}, ensure_ascii=False),
-                                json.dumps({field: decrypted_json}, ensure_ascii=False)
-                            ))
-                        except json.JSONDecodeError:
-                            # 如果不是JSON格式，直接记录字符串
-                            self.logger.log(None, self.logger._format_log_message(
-                                url,
-                                field,
-                                json.dumps({field: original_encrypted}, ensure_ascii=False),
-                                json.dumps({field: decrypted_value}, ensure_ascii=False)
-                            ))
-                    except Exception as e:
-                        # 记录解密失败
-                        self.logger.log(None, self.logger._format_log_message(
-                            url,
-                            field,
-                            json.dumps({field: original_encrypted}, ensure_ascii=False),
-                            json.dumps({field: f"解密失败: {str(e)}"}, ensure_ascii=False)
-                        ))
-                        continue
-            
-            if modified:
-                return urlencode(parsed_data, doseq=True), True
-            return form_data, False
-            
+            # 6. UTF-8解码
+            try:
+                decrypted_text = decrypted_data.decode('utf-8')
+                
+                if not decrypted_text:
+                    self.logger.log(None, "解密结果为空字符串")
+                    return value
+                
+                return decrypted_text
+            except Exception as e:
+                self.logger.log(None, f"UTF-8解码错误: {str(e)}")
+                return value
+                
         except Exception as e:
-            error_msg = f"处理表单数据失败: {str(e)}"
-            self.logger.log(None, self.logger._format_log_message(url, "", form_data, error_msg))
-            return form_data, False
+            self.logger.log(None, f"解密过程错误: {str(e)}")
+            return value
 
-    @concurrent
-    def request(self, flow: http.HTTPFlow) -> None:
-        """处理请求"""
-        if STOP_EVENT.is_set() or not hasattr(self, '_initialized'):  # 检查是否已初始化
-            return
-            
-        try:
-            content_type = flow.request.headers.get("Content-Type", "")
-            url = self._get_request_url(flow)
-            
-            with self._lock:
-                modified = False
-                if "application/json" in content_type:
-                    try:
-                        json_data = json.loads(flow.request.content)
-                        json_data, modified = self.process_json_data(json_data, url)
-                        if modified:
-                            flow.request.content = json.dumps(json_data, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
-                            flow.request.headers["Content-Length"] = str(len(flow.request.content))
-                    except json.JSONDecodeError as e:
-                        return
-
-                elif "application/x-www-form-urlencoded" in content_type:
-                    try:
-                        form_data = flow.request.content.decode('utf-8')
-                        new_content, modified = self.process_form_data(form_data, url)
-                        if modified:
-                            flow.request.content = new_content.encode('utf-8')
-                            flow.request.headers["Content-Length"] = str(len(flow.request.content))
-                    except UnicodeDecodeError as e:
-                        return
-
-        except Exception as e:
-            pass
-
-    def _get_request_url(self, flow: http.HTTPFlow) -> str:
-        """获取请求URL"""
-        return f"{flow.request.scheme}://{flow.request.host}{flow.request.path}"
-
-    def done(self) -> None:
-        """脚本退出时的清理函数"""
-        global STOP_EVENT
-        STOP_EVENT.set()
-        self.logger.stop()
-
-# 获取配置
-try:
-    fields = get_fields()
-    key, iv = get_des_config()
-except Exception as e:
-    print(f"配置错误: {str(e)}", file=sys.stderr)
-    sys.exit(1)
+# 创建拦截器实例
+interceptor = DesCbcDecryptInterceptor()
 
 # 注册插件
-addons = [DesCbcDecryptInterceptor(fields, key, iv)]
+addons = [interceptor]

@@ -1,0 +1,296 @@
+[2025-06-28 17:24:27.133] #1 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=YWRtaW4=
+处理值: m=0&username=admin&password=WVdSdGFXND0=
+==================================================
+
+[2025-06-28 17:24:27.150] #2 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login failed!
+处理值: Login failed!
+==================================================
+
+[2025-06-28 17:24:28.185] #3 URL: http://detectportal.firefox.com/canonical.html
+方向: 响应
+模式: encrypt
+字段: response
+原始值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+处理值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+==================================================
+
+[2025-06-28 17:24:28.585] #4 URL: http://detectportal.firefox.com/success.txt?ipv4
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:24:28.602] #5 URL: http://detectportal.firefox.com/success.txt?ipv6
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:24:32.404] #6 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=admin
+处理值: m=0&username=admin&password=YWRtaW4=
+==================================================
+
+[2025-06-28 17:24:32.411] #7 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-06-28 17:24:34.100] #6 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=admin
+处理值: m=0&username=admin&password=YWRtaW4=
+==================================================
+
+[2025-06-28 17:24:34.107] #7 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-06-28 17:24:34.303] #6 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=admin
+处理值: m=0&username=admin&password=YWRtaW4=
+==================================================
+
+[2025-06-28 17:24:34.308] #7 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-06-28 17:24:34.487] #6 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=admin
+处理值: m=0&username=admin&password=YWRtaW4=
+==================================================
+
+[2025-06-28 17:24:34.493] #7 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-06-28 17:24:34.672] #6 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=admin
+处理值: m=0&username=admin&password=YWRtaW4=
+==================================================
+
+[2025-06-28 17:24:34.677] #7 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-06-28 17:24:34.843] #6 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=admin
+处理值: m=0&username=admin&password=YWRtaW4=
+==================================================
+
+[2025-06-28 17:24:34.849] #7 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-06-28 17:24:35.013] #6 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: encrypt
+字段: password
+原始值: m=0&username=admin&password=admin
+处理值: m=0&username=admin&password=YWRtaW4=
+==================================================
+
+[2025-06-28 17:24:35.019] #7 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-06-28 17:24:57.168] #3 URL: http://detectportal.firefox.com/canonical.html
+方向: 响应
+模式: encrypt
+字段: response
+原始值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+处理值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+==================================================
+
+[2025-06-28 17:24:57.349] #4 URL: http://detectportal.firefox.com/success.txt?ipv4
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:24:57.358] #5 URL: http://detectportal.firefox.com/success.txt?ipv6
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:25:07.556] #3 URL: http://detectportal.firefox.com/canonical.html
+方向: 响应
+模式: encrypt
+字段: response
+原始值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+处理值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+==================================================
+
+[2025-06-28 17:25:07.735] #4 URL: http://detectportal.firefox.com/success.txt?ipv4
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:25:07.747] #5 URL: http://detectportal.firefox.com/success.txt?ipv6
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:25:27.930] #3 URL: http://detectportal.firefox.com/canonical.html
+方向: 响应
+模式: encrypt
+字段: response
+原始值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+处理值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+==================================================
+
+[2025-06-28 17:25:28.111] #4 URL: http://detectportal.firefox.com/success.txt?ipv4
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:25:28.119] #5 URL: http://detectportal.firefox.com/success.txt?ipv6
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:26:08.324] #3 URL: http://detectportal.firefox.com/canonical.html
+方向: 响应
+模式: encrypt
+字段: response
+原始值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+处理值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+==================================================
+
+[2025-06-28 17:26:08.504] #4 URL: http://detectportal.firefox.com/success.txt?ipv4
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:26:08.995] #5 URL: http://detectportal.firefox.com/success.txt?ipv6
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:27:29.252] #3 URL: http://detectportal.firefox.com/canonical.html
+方向: 响应
+模式: encrypt
+字段: response
+原始值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+处理值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+==================================================
+
+[2025-06-28 17:27:29.467] #4 URL: http://detectportal.firefox.com/success.txt?ipv4
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:27:29.479] #5 URL: http://detectportal.firefox.com/success.txt?ipv6
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
