@@ -294,3 +294,39 @@
 
 ==================================================
 
+[2025-06-28 17:28:48.341] #8 URL: ://ads.mozilla.org
+方向: 响应
+模式: encrypt
+字段: response
+原始值: Cannot connect to ads.mozilla.org:443: [WinError 121] 信号灯超时时间已到 If you plan to redirect requests away from this server, consider setting `connection_strategy` to `lazy` to suppress early connections.
+处理值: Cannot connect to ads.mozilla.org:443: [WinError 121] 信号灯超时时间已到 If you plan to redirect requests away from this server, consider setting `connection_strategy` to `lazy` to suppress early connections.
+==================================================
+
+[2025-06-28 17:30:09.816] #3 URL: http://detectportal.firefox.com/canonical.html
+方向: 响应
+模式: encrypt
+字段: response
+原始值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+处理值: <meta http-equiv="refresh" content="0;url=https://support.mozilla.org/kb/captive-portal"/>
+==================================================
+
+[2025-06-28 17:30:10.235] #4 URL: http://detectportal.firefox.com/success.txt?ipv4
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
+[2025-06-28 17:30:10.645] #5 URL: http://detectportal.firefox.com/success.txt?ipv6
+方向: 响应
+模式: encrypt
+字段: response
+原始值: success
+
+处理值: success
+
+==================================================
+
