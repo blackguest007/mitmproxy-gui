@@ -1,5 +1,9 @@
 """
+<<<<<<< HEAD
 SHA256 加密脚本-已测试√
+=======
+SHA256 加密脚本
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 
 使用方法:
     mitmdump -p 8888 -s sha256.py --ssl-insecure field=password

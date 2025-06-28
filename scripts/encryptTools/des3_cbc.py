@@ -1,5 +1,9 @@
 """
+<<<<<<< HEAD
 DES3-CBC 加密脚本-已测试√√√
+=======
+DES3-CBC 加密脚本-已测试
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 
 使用方法:
     mitmdump -p 8888 -s des3_cbc.py --ssl-insecure field=password key=your_key iv=your_iv
@@ -21,7 +25,10 @@ import os
 import sys
 import base64
 from typing import Dict, Any
+<<<<<<< HEAD
 from unittest import installHandler
+=======
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 from Crypto.Cipher import DES3
 from Crypto.Util.Padding import pad
 import json
@@ -74,6 +81,7 @@ class Des3CbcEncryptInterceptor(BaseInterceptor):
             str: 加密后的值（Base64编码）
         """
         try:
+<<<<<<< HEAD
             # 保证 value 是 dict 或 str
             if isinstance(value,dict):
 
@@ -92,6 +100,15 @@ class Des3CbcEncryptInterceptor(BaseInterceptor):
         except Exception as e:
             self.logger.log(None, f"DES3-CBC加密失败: {str(e)}")
             return value if isinstance(value, str) else str(value)
+=======
+            value = value.strip('"').strip("'")
+            cipher = DES3.new(self.key, DES3.MODE_CBC, self.iv)
+            ciphertext = cipher.encrypt(pad(value.encode('utf-8'), DES3.block_size))
+            return base64.b64encode(ciphertext).decode('utf-8')
+        except Exception as e:
+            self.logger.log(None, f"DES3-CBC加密失败: {str(e)}")
+            return value
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 
 # 创建拦截器实例
 interceptor = Des3CbcEncryptInterceptor()

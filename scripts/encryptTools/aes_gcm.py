@@ -1,5 +1,9 @@
 """
+<<<<<<< HEAD
 AES-GCM 加密脚本-已测试√√√
+=======
+AES-GCM 加密脚本
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 
 使用方法:
     mitmdump -p 8888 -s aes_gcm.py --ssl-insecure field=password key=your_key iv=your_iv
@@ -95,8 +99,13 @@ class AesGcmEncryptInterceptor(BaseInterceptor):
             value = value.strip('"').strip("'")
             # 创建 AES-GCM 加密器
             cipher = AES.new(self.key, AES.MODE_GCM, nonce=self.iv)
+<<<<<<< HEAD
             # 加密数据（GCM 不需要填充）
             ciphertext, tag = cipher.encrypt_and_digest(value.encode('utf-8'))
+=======
+            # 加密数据
+            ciphertext, tag = cipher.encrypt_and_digest(pad(value.encode('utf-8'), AES.block_size))
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
             # 组合密文和认证标签
             encrypted_data = ciphertext + tag
             # Base64 编码
@@ -108,5 +117,17 @@ class AesGcmEncryptInterceptor(BaseInterceptor):
 # 创建拦截器实例
 interceptor = AesGcmEncryptInterceptor()
 
+<<<<<<< HEAD
 # 注册插件
 addons = [interceptor] 
+=======
+# 注册请求和响应处理函数
+def request(flow):
+    interceptor.request(flow)
+
+def response(flow):
+    interceptor.response(flow)
+
+def done():
+    interceptor.done() 
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263

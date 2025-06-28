@@ -1,4 +1,5 @@
 """
+<<<<<<< HEAD
 DES-CBC 加密脚本-已测试√√√
 
 【支持数据格式】
@@ -27,6 +28,24 @@ mitmdump -p 8888 -s des_cbc.py --ssl-insecure field=password,username key=your_k
 - 支持单个或多个字段加密
 - 加密结果会进行 Base64 编码
 - 日志文件保存在 src/logs 目录下，格式为: encrypt_des_cbc_时间戳.log
+=======
+DES-CBC 加密脚本-已测试
+
+使用方法:
+    mitmdump -p 8888 -s des_cbc.py --ssl-insecure field=password key=your_key iv=your_iv
+    mitmdump -p 8888 -s des_cbc.py --ssl-insecure field=password,username key=your_key iv=your_iv
+
+参数说明:
+    field: 需要处理的字段，多个字段用逗号分隔
+    key: DES 密钥（8字节）
+    iv: 初始化向量（8字节）
+
+注意事项:
+    1. 支持 application/json 和 application/x-www-form-urlencoded 格式
+    2. 支持单个或多个字段加密
+    3. 加密结果会进行 Base64 编码
+    4. 日志文件保存在 src/logs 目录下，格式为: encrypt_des_cbc_时间戳.log
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 """
 
 import os
@@ -70,6 +89,10 @@ class DesCbcEncryptInterceptor(BaseInterceptor):
             processing_fields=get_processing_fields(),
             process_func=self.encrypt_value
         )
+<<<<<<< HEAD
+=======
+
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
     def encrypt_value(self, value: str, url: str, field: str, full_json: Dict[str, Any] = None, form_data: str = "") -> str:
         """
         对指定字段进行 DES-CBC 加密
@@ -83,6 +106,7 @@ class DesCbcEncryptInterceptor(BaseInterceptor):
             str: 加密后的值（Base64编码）
         """
         try:
+<<<<<<< HEAD
             # 如果不是字符串，先序列化为字符串
             if not isinstance(value, str):
                 import json
@@ -95,10 +119,22 @@ class DesCbcEncryptInterceptor(BaseInterceptor):
             self.logger.log(None, f"DES-CBC加密失败: {str(e)}")
             import traceback
             self.logger.log(None, traceback.format_exc())
+=======
+            value = value.strip('"').strip("'")
+            cipher = DES.new(self.key, DES.MODE_CBC, self.iv)
+            ciphertext = cipher.encrypt(pad(value.encode('utf-8'), DES.block_size))
+            return base64.b64encode(ciphertext).decode('utf-8')
+        except Exception as e:
+            self.logger.log(None, f"DES-CBC加密失败: {str(e)}")
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
             return value
 
 # 创建拦截器实例
 interceptor = DesCbcEncryptInterceptor()
 
 # 注册插件
+<<<<<<< HEAD
 addons = [interceptor]
+=======
+addons = [interceptor] 
+>>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
