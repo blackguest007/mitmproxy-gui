@@ -183,15 +183,28 @@ QProgressBar::chunk {
 }
 
 /* ========== Checkboxes/Radios ========== */
-QCheckBox::indicator, QRadioButton::indicator {
-    width: 16px;
-    height: 16px;
-    border: 1px solid #4a4a4a;
+QCheckBox {
+    spacing: 10px;
+    font-size: 15px;
+    color: #e0e0e0;
 }
-
+QCheckBox::indicator {
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    border: 2px solid rgb(38, 100, 157);
+    background: #fff;
+}
 QCheckBox::indicator:checked {
-    background-color: #3d8ec9;
-    image: url(:/icons/check_light.svg);
+    background: rgb(38, 100, 157);
+    border: 2px solid rgb(38, 100, 157);
+}
+QCheckBox::indicator:unchecked {
+    background: #fff;
+    border: 2px solid rgb(38, 100, 157);
+}
+QCheckBox::indicator:hover {
+    border: 2px solid #74b9ff;
 }
 
 QRadioButton::indicator:checked {

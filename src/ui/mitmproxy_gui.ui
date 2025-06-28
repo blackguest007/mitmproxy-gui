@@ -204,6 +204,26 @@
          </layout>
         </item>
         <item>
+         <widget class="QCheckBox" name="enable_algorithm_chain_checkbox">
+          <property name="text">
+           <string>启用算法链</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="encrypt_whole_data_checkbox">
+          <property name="text">
+           <string>对整体数据进行加解密</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="control_layout">
           <item>
            <widget class="QPushButton" name="intercept_btn">
@@ -587,6 +607,80 @@
            </layout>
           </widget>
          </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="algorithm_chain_tab">
+       <attribute name="title">
+        <string>算法链</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="algorithm_chain_tab_layout">
+        <item>
+         <widget class="QTableWidget" name="algorithm_chain_table">
+          <property name="rowCount">
+           <number>2</number>
+          </property>
+          <property name="columnCount">
+           <number>5</number>
+          </property>
+          <column>
+           <property name="text">
+            <string>步骤</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>处理范围</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>算法类型</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>字段名</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>参数</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="algorithm_chain_btn_layout">
+          <item>
+           <widget class="QPushButton" name="add_algorithm_btn">
+            <property name="text">
+             <string>添加算法</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="remove_algorithm_btn">
+            <property name="text">
+             <string>删除步骤</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="move_up_btn">
+            <property name="text">
+             <string>上移</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="move_down_btn">
+            <property name="text">
+             <string>下移</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>

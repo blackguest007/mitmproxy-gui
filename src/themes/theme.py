@@ -31,18 +31,13 @@ def apply_theme(window):
     if selected_theme:
         # 获取 qss 的路径
         theme_file_path = os.path.join(os.path.dirname(__file__), '..', '..', 'resource', 'themes',
-                                       selected_theme)  # 使用正确的相对路径
+                                       selected_theme)
         try:
-            # 指定文件编码为 utf-8
             with open(theme_file_path, 'r', encoding='utf-8') as f:
-                qss = f.read()  # 读取 qss 文件内容
-                # print(qss)  # 打印 qss 内容调试
-                window.setStyleSheet(qss)  # 应用主题
-                # print(f"Applied theme: {selected_theme}")
+                qss = f.read()
+                window.setStyleSheet(qss)
         except Exception as e:
             pass
-            # print(f"Error loading theme '{selected_theme}': {e}")
-            # 你也可以在这里弹出一个提示框，给用户反馈错误信息
 
 
 # 初始化主题为 dark

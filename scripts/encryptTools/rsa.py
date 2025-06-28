@@ -1,338 +1,101 @@
 """
-RSA 加密脚本-已测试√√
+RSA 加密脚本-已测试√
 
 使用方法:
-    mitmdump -p 8888 -s rsa.py --ssl-insecure field=password public_key=path/to/public.pem
-    mitmdump -p 8888 -s rsa.py --ssl-insecure field=password,username public_key=path/to/public.pem
+    mitmdump -p 8888 -s rsa.py --ssl-insecure field=password key=your_public_key
+    mitmdump -p 8888 -s rsa.py --ssl-insecure field=password,username key=your_public_key
 
 参数说明:
-    -p 8888: 监听端口
-    -s rsa.py: 指定脚本文件
-    --ssl-insecure: 忽略 SSL 证书验证
-    field=password: 单个加密字段
-    field=password,username: 多个加密字段，用逗号分隔
-    public_key=path/to/public.pem: RSA公钥文件路径
+    field: 需要处理的字段，多个字段用逗号分隔
+    key/public_key: RSA 公钥（PEM 格式）
 
 注意事项:
     1. 支持 application/json 和 application/x-www-form-urlencoded 格式
     2. 支持单个或多个字段加密
-    3. 公钥文件必须是有效的 PEM 格式
-    4. 加密后的数据使用Base64编码
-    5. 日志文件保存在 logs 目录下，格式为: encrypt_rsa_时间戳.log
-    6. 使用 PKCS1_v1_5 填充模式，与 jsencrypt.js 库保持一致
-
-日志格式示例:
-    1. 表单数据:
-    [2024-03-21 10:30:45] #1 URL: http://example.com/login
-    字段: password
-    原始值: m=2&username=admin&password=admin
-    加密值: m=2&username=admin&password=Base64EncodedString
-    ==================================================
-
-    2. JSON数据:
-    [2024-03-21 10:30:45] #1 URL: http://example.com/api
-    字段: password
-    原始值: {"username":"admin","password":"admin"}
-    加密值: {"username":"admin","password":"Base64EncodedString"}
-    ==================================================
+    3. 加密结果会进行 Base64 编码
+    4. 日志文件保存在 src/logs 目录下，格式为: encrypt_rsa_时间戳.log
 """
 
-import sys
-from mitmproxy import http
-from mitmproxy.script import concurrent
-import json
-from urllib.parse import parse_qs, urlencode
-import threading
-import queue
-import time
 import os
-from datetime import datetime
+import sys
+from typing import Dict, Any
+import base64
+from urllib.parse import unquote
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5
-import base64
-import signal
-from typing import Dict, List, Tuple, Optional, Any, Union
 
-# 全局停止标志
-STOP_EVENT = threading.Event()
+# 添加父目录到 Python 路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
-# 日志配置
-LOG_CONFIG = {
-    'batch_size': 50,  # 批处理大小
-    'flush_interval': 1.0,  # 文件刷新间隔（秒）
-    'queue_timeout': 0.1,  # 队列获取超时时间
-    'sleep_interval': 0.01,  # 空闲时睡眠时间
-}
+from common.utils import get_processing_fields
+from common.interceptor import BaseInterceptor
 
-# 全局日志计数器
-LOG_COUNTER = 0
-LOG_COUNTER_LOCK = threading.Lock()
-# 用于存储数据包的序号
-PACKET_COUNTERS = {}
-PACKET_COUNTERS_LOCK = threading.Lock()
-
-def get_packet_number(url: str, content: str) -> int:
-    """获取数据包的序号，相同的数据包返回相同的序号"""
-    global LOG_COUNTER, PACKET_COUNTERS
-    # 使用URL和内容的哈希值作为键，避免存储过长的字符串
-    packet_key = hash(f"{url}:{content}")
-    
-    with PACKET_COUNTERS_LOCK:
-        if packet_key not in PACKET_COUNTERS:
-            with LOG_COUNTER_LOCK:
-                LOG_COUNTER += 1
-                PACKET_COUNTERS[packet_key] = LOG_COUNTER
-        return PACKET_COUNTERS[packet_key]
-
-def get_encryption_config() -> Tuple[List[str], Optional[str]]:
-    """从命令行参数获取加密配置"""
-    encryption_fields = []
-    public_key_path = None
-
-    for arg in sys.argv:
-        if arg.startswith('field='):
-            encryption_fields = [field.strip() for field in arg.replace('field=', '').split(',') if field.strip()]
-        elif arg.startswith('public_key='):
-            public_key_path = arg.replace('public_key=', '').strip()
-
-    if not public_key_path:
-        raise ValueError("必须提供公钥文件路径（使用 public_key 参数）")
-
-    return encryption_fields, public_key_path
-
-class AsyncLogger:
-    """异步日志处理器"""
-    _instance = None
-    _lock = threading.Lock()
-
-    def __new__(cls):
-        with cls._lock:
-            if cls._instance is None:
-                cls._instance = super(AsyncLogger, cls).__new__(cls)
-                cls._instance._initialized = False
-            return cls._instance
-
-    def __init__(self):
-        if self._initialized:
-            return
-            
-        with self._lock:
-            if self._initialized:
-                return
-                
-            self.log_queue = queue.Queue(maxsize=1000)  # 设置较大的队列大小
-            self.running = True
-            self.thread = threading.Thread(target=self._process_logs, daemon=True)
-            self.thread.start()
-            
-            # 创建日志目录
-            self.log_dir = "logs"
-            if not os.path.exists(self.log_dir):
-                os.makedirs(self.log_dir)
-                
-            # 创建日志文件，使用encrypt模式命名
-            script_name = os.path.splitext(os.path.basename(__file__))[0]
-            self.log_file = os.path.join(self.log_dir, f"encrypt_{script_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
-            self._initialized = True
-            self.fields = []  # 初始化字段列表
-            self.last_flush_time = time.time()  # 添加最后刷新时间记录
-
-    def _process_logs(self):
-        """处理日志队列"""
-        while self.running:
-            try:
-                # 非阻塞方式获取日志，设置较短的超时时间
-                log_entry = self.log_queue.get(timeout=0.01)
-                if log_entry:
-                    flow, comment = log_entry
-                    # 立即写入文件
-                    with open(self.log_file, 'a', encoding='utf-8') as f:
-                        f.write(comment + '\n')
-                        f.flush()  # 强制刷新文件缓冲区
-                        os.fsync(f.fileno())  # 确保写入磁盘
-            except queue.Empty:
-                # 队列为空时短暂休眠
-                time.sleep(0.001)  # 减少休眠时间
-            except Exception as e:
-                print(f"日志处理错误: {str(e)}")
-
-    def log(self, flow, comment):
-        """添加日志到队列"""
-        try:
-            # 使用非阻塞方式添加日志
-            self.log_queue.put_nowait((flow, comment))
-        except queue.Full:
-            # 队列满时，立即处理一些日志
-            try:
-                # 处理一条日志
-                log_entry = self.log_queue.get_nowait()
-                flow, comment = log_entry
-                with open(self.log_file, 'a', encoding='utf-8') as f:
-                    f.write(comment + '\n')
-                    f.flush()
-                    os.fsync(f.fileno())
-                # 然后添加新日志
-                self.log_queue.put_nowait((flow, comment))
-            except Exception as e:
-                print(f"日志队列处理错误: {str(e)}")
-
-    def stop(self):
-        """停止日志处理"""
-        self.running = False
-        if self.thread.is_alive():
-            self.thread.join()
-
-    def _format_log_message(self, url: str, field: str, original: str, processed: str, full_json: Dict[str, Any] = None, form_data: str = "") -> str:
-        """格式化日志消息"""
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        # 使用 URL 和原始内容作为键来获取数据包序号
-        packet_number = get_packet_number(url, original)
-        
-        # 根据数据类型选择显示格式
-        if full_json:
-            processed_value = json.dumps(full_json, ensure_ascii=False)
-        elif form_data:
-            # 将表单数据转换为 key=value 格式
-            params = parse_qs(form_data, keep_blank_values=True)
-            processed_value = "&".join([f"{k}={v[0]}" for k, v in params.items()])
-        else:
-            processed_value = processed
-            
-        return (
-            f"[{timestamp}] #{packet_number} URL: {url}\n"
-            f"字段: {field}\n"
-            f"原始值: {original}\n"
-            f"加密值: {processed_value}\n"
-            f"{'='*50}\n"
-        )
-
-class RsaEncryptInterceptor:
+class RsaEncryptInterceptor(BaseInterceptor):
     """RSA 加密拦截器"""
-    
-    def __init__(self, encryption_fields: List[str], public_key_path: str):
-        self.encryption_fields = encryption_fields
-        self.public_key = self._load_public_key(public_key_path)
-        self.cipher = PKCS1_v1_5.new(self.public_key)
-        self._lock = threading.Lock()
-        self.logger = AsyncLogger()
-        self.logger.fields = encryption_fields  # 传递字段列表到logger
+    def __init__(self):
+        script_name = os.path.splitext(os.path.basename(__file__))[0]
+        super().__init__(
+            script_name=script_name,
+            mode="encrypt",
+            processing_fields=get_processing_fields(),
+            process_func=self.encrypt_value
+        )
+        self.public_key = self._get_rsa_config()
 
-    def _load_public_key(self, public_key_path: str) -> RSA.RsaKey:
-        """加载RSA公钥"""
+    def _get_rsa_config(self) -> RSA.RsaKey:
+        """获取RSA公钥配置"""
+        public_key_path = None
+        for arg in sys.argv:
+            if arg.startswith('key=') or arg.startswith('public_key='):
+                public_key_path = arg.split('=', 1)[1].strip()
+        if not public_key_path:
+            raise ValueError("必须提供key或public_key参数")
+        if not os.path.exists(public_key_path):
+            raise ValueError(f"公钥文件不存在: {public_key_path}")
         try:
-            with open(public_key_path, 'rb') as f:
-                key_data = f.read()
-            key = RSA.import_key(key_data)
-            if not key.has_private():
-                return key
-            raise ValueError("提供的密钥不是公钥")
+            with open(public_key_path, 'r') as f:
+                return RSA.import_key(f.read())
         except Exception as e:
-            self.logger.log(None, self.logger._format_log_message("", "", "", f"加载公钥失败: {e}"))
-            raise
+            raise ValueError(f"读取公钥文件失败: {str(e)}")
 
-    def encrypt_value(self, plain_text: str, url: str, field: str, full_json: Dict[str, Any] = None, form_data: str = "") -> str:
-        """加密单个值"""
+    def encrypt_value(self, value: str, url: str, field: str, full_json: Dict[str, Any] = None, form_data: str = "") -> str:
+        """
+        对指定字段进行 RSA 加密
+        Args:
+            value: 要加密的值
+            url: 请求 URL
+            field: 字段名
+            full_json: 完整的 JSON 数据（如果是 JSON 请求）
+            form_data: 完整的表单数据（如果是表单请求）
+        Returns:
+            str: 加密后的值（Base64编码）
+        """
         try:
-            plain_data = plain_text.encode('utf-8')
-            encrypted_data = self.cipher.encrypt(plain_data)
-            encrypted_text = base64.b64encode(encrypted_data).decode('utf-8')
-            self.logger.log(None, self.logger._format_log_message(url, field, plain_text, encrypted_text, full_json, form_data))
-            return encrypted_text
+            # 1. 处理表单数据中的空格（将空格替换回+号）
+            if form_data:
+                value = value.replace(' ', '+')
+            # 2. 检查是否需要URL解码
+            if '%' in value or '+' in value:
+                value = unquote(value)
+            # 3. 明文转 bytes
+            data = value.encode('utf-8')
+            # 4. 公钥加密
+            cipher = PKCS1_v1_5.new(self.public_key)
+            encrypted = cipher.encrypt(data)
+            # 5. Base64 编码
+            encrypted_b64 = base64.b64encode(encrypted).decode('utf-8')
+            self.logger.log(None, f"加密前: {value}")
+            self.logger.log(None, f"加密后: {encrypted_b64}")
+            return encrypted_b64
         except Exception as e:
-            self.logger.log(None, self.logger._format_log_message(url, field, plain_text, f"加密失败: {e}", full_json, form_data))
-            raise
+            self.logger.log(None, f"RSA加密失败: {str(e)}")
+            return value
 
-    def _get_request_url(self, flow: http.HTTPFlow) -> str:
-        """获取请求URL"""
-        return f"{flow.request.scheme}://{flow.request.host}{flow.request.path}"
-
-    @concurrent
-    def request(self, flow: http.HTTPFlow) -> None:
-        """处理请求"""
-        if STOP_EVENT.is_set():
-            return
-            
-        try:
-            content_type = flow.request.headers.get("Content-Type", "")
-            url = self._get_request_url(flow)
-            
-            with self._lock:
-                if "application/json" in content_type:
-                    self._handle_json_request(flow, url)
-                elif "application/x-www-form-urlencoded" in content_type:
-                    self._handle_form_request(flow, url)
-        except Exception as e:
-            self.logger.log(None, self.logger._format_log_message(url, "", "", f"处理请求失败: {str(e)}"))
-
-    def _handle_json_request(self, flow: http.HTTPFlow, url: str) -> None:
-        """处理JSON请求"""
-        try:
-            json_data = json.loads(flow.request.content)
-            if self._encrypt_json_fields(json_data, url):
-                self._update_json_request(flow, json_data)
-        except json.JSONDecodeError as e:
-            self.logger.log(None, self.logger._format_log_message(url, "", "", f"解析 JSON 数据时出错: {str(e)}"))
-
-    def _encrypt_json_fields(self, json_data: Dict[str, Any], url: str) -> bool:
-        """加密JSON字段"""
-        modified = False
-        for field in self.encryption_fields:
-            if field in json_data:
-                try:
-                    original = str(json_data[field])
-                    encrypted = self.encrypt_value(original, url, field, json_data)
-                    json_data[field] = encrypted
-                    modified = True
-                except Exception as e:
-                    self.logger.log(None, self.logger._format_log_message(url, field, original, f"加密失败: {str(e)}", json_data))
-                    continue
-        return modified
-
-    def _update_json_request(self, flow: http.HTTPFlow, json_data: Dict[str, Any]) -> None:
-        """更新JSON请求内容"""
-        flow.request.content = json.dumps(json_data, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
-        flow.request.headers["Content-Length"] = str(len(flow.request.content))
-
-    def _handle_form_request(self, flow: http.HTTPFlow, url: str) -> None:
-        """处理表单请求"""
-        try:
-            form_data = flow.request.content.decode('utf-8')
-            params = parse_qs(form_data, keep_blank_values=True)
-            modified = False
-            
-            for field in self.encryption_fields:
-                if field in params:
-                    try:
-                        value = params[field][0]
-                        encrypted = self.encrypt_value(value, url, field, form_data=form_data)
-                        if encrypted != value:
-                            params[field] = [encrypted]
-                            modified = True
-                    except Exception as e:
-                        self.logger.log(None, self.logger._format_log_message(url, field, value, f"加密失败: {str(e)}", form_data=form_data))
-                        continue
-            
-            if modified:
-                flow.request.content = urlencode(params, doseq=True).encode('utf-8')
-                flow.request.headers["Content-Length"] = str(len(flow.request.content))
-        except Exception as e:
-            self.logger.log(None, self.logger._format_log_message(url, "", form_data, f"处理表单数据失败: {str(e)}"))
-
-    def done(self) -> None:
-        """脚本退出时的清理函数"""
-        global STOP_EVENT
-        STOP_EVENT.set()
-        self.logger.stop()
-
-# 获取配置
-try:
-    fields, public_key_path = get_encryption_config()
-    if not fields:
-        print("错误: 必须提供至少一个字段", file=sys.stderr)
-        sys.exit(1)
-except Exception as e:
-    print(f"配置错误: {str(e)}", file=sys.stderr)
-    sys.exit(1)
+# 创建拦截器实例
+interceptor = RsaEncryptInterceptor()
 
 # 注册插件
-addons = [RsaEncryptInterceptor(fields, public_key_path)]
+addons = [interceptor]

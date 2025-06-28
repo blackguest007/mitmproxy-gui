@@ -2,8 +2,8 @@
 Base64 编解码脚本-已测试√√
 
 使用方法:
-    编码: mitmdump -p 9999 -s base64.py --ssl-insecure field=password
-    解码: mitmdump -p 8888 -s base64.py --mode upstream:http://127.0.0.1:8080 --ssl-insecure field=password
+    编码: mitmdump -p 9999 -s Base64.py --ssl-insecure field=password
+    解码: mitmdump -p 8888 -s Base64.py --mode upstream:http://127.0.0.1:8080 --ssl-insecure field=password
 
 参数说明:
     field: 需要处理的字段，多个字段用逗号分隔
