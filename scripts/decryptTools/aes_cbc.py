@@ -31,7 +31,7 @@ parent_dir = os.path.dirname(current_dir)
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-<<<<<<< HEAD
+
 from common.utils import get_processing_fields, is_valid_base64
 from common.interceptor import BaseInterceptor
 
