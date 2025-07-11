@@ -69,7 +69,6 @@ class BaseInterceptor:
         """处理JSON数据"""
         modified = False
         original_data = json.dumps(data, separators=(',', ':'), ensure_ascii=False)
-<<<<<<< HEAD
 
         for field in self.processing_fields:
             if field in data:
@@ -86,20 +85,10 @@ class BaseInterceptor:
                 try:
                     processed_value = self.process_func(value, url, field, data)
                     if processed_value and processed_value != value:
-=======
-        
-        for field in self.processing_fields:
-            if field in data and isinstance(data[field], str):
-                try:
-                    original_value = data[field]
-                    processed_value = self.process_func(original_value, url, field, data)
-                    if processed_value and processed_value != original_value:
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
                         data[field] = processed_value
                         modified = True
                 except Exception as e:
                     self.logger.log(None, f"处理字段 {field} 失败: {str(e)}")
-<<<<<<< HEAD
                     import traceback
                     self.logger.log(None, traceback.format_exc())
                     continue
@@ -108,22 +97,11 @@ class BaseInterceptor:
             final_data = json.dumps(data, separators=(',', ':'), ensure_ascii=False)
             self.logger.log(None, self.logger._format_log_message(url, field, original_data, final_data, is_response=is_response))
 
-=======
-                    continue
-        
-        if modified:
-            final_data = json.dumps(data, separators=(',', ':'), ensure_ascii=False)
-            self.logger.log(None, self.logger._format_log_message(url, field, original_data, final_data, is_response=is_response))
-                    
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
         return data, modified
 
     def process_form_data(self, form_data: str, url: str, is_response: bool = False) -> Tuple[str, bool]:
         """处理表单数据"""
-<<<<<<< HEAD
         import json
-=======
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
         try:
             # 解析表单数据，保持原始格式
             parsed_data = {}
@@ -131,20 +109,12 @@ class BaseInterceptor:
                 if '=' in pair:
                     key, value = pair.split('=', 1)
                     parsed_data[key] = [value]
-<<<<<<< HEAD
             modified = False
             original_values = {}  # 存储原始值
-=======
-            
-            modified = False
-            original_values = {}  # 存储原始值
-            
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
             for field in self.processing_fields:
                 if field in parsed_data:
                     try:
                         value = parsed_data[field][0]
-<<<<<<< HEAD
                         # 统一处理：如果能被解析为 JSON，则用标准序列化
                         try:
                             obj = json.loads(value)
@@ -153,22 +123,12 @@ class BaseInterceptor:
                             pass  # 不是 JSON 字符串就原样
                         original_values[field] = value
                         processed_value = self.process_func(value, url, field, form_data=form_data)
-=======
-                        # 保存原始值，不进行任何处理
-                        original_values[field] = value
-                        # 处理值，确保没有引号
-                        processed_value = self.process_func(value.strip('"').strip("'"), url, field, form_data=form_data)
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
                         if processed_value and processed_value != value:
                             parsed_data[field] = [processed_value]
                             modified = True
                     except Exception as e:
                         self.logger.log(None, f"处理字段 {field} 失败: {str(e)}")
                         continue
-<<<<<<< HEAD
-=======
-            
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
             if modified:
                 # 构建新的表单数据，不进行URL编码
                 new_parts = []
@@ -178,10 +138,6 @@ class BaseInterceptor:
                     else:
                         new_parts.append(f"{k}={v}")
                 new_content = "&".join(new_parts)
-<<<<<<< HEAD
-=======
-                
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
                 # 记录日志，使用完整的表单数据
                 self.logger.log(None, self.logger._format_log_message(
                     url,
@@ -190,16 +146,8 @@ class BaseInterceptor:
                     new_content,  # 使用完整的处理后表单数据
                     is_response=is_response
                 ))
-<<<<<<< HEAD
                 return new_content, True
             return form_data, False
-=======
-                
-                return new_content, True
-                
-            return form_data, False
-            
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
         except Exception as e:
             self.logger.log(None, f"处理表单数据失败: {str(e)}")
             return form_data, False

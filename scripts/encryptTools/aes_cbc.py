@@ -1,9 +1,5 @@
 """
-<<<<<<< HEAD
 AES-CBC 加密脚本-已测试√√√
-=======
-AES-CBC 加密脚本-已测试
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 
 使用方法:
     mitmdump -p 8888 -s aes_cbc.py --ssl-insecure field=password key=your_key iv=your_iv
@@ -28,7 +24,6 @@ from typing import Dict, Any
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 
-<<<<<<< HEAD
 # 添加父目录到 Python 路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -38,18 +33,6 @@ if parent_dir not in sys.path:
 from common.utils import get_processing_fields
 from common.interceptor import BaseInterceptor
 
-=======
-from scripts.common.interceptor import BaseInterceptor
-from scripts.common.utils import get_processing_fields
-
-# 添加父目录到 Python 路径
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-if parent_dir not in sys.path:
-    sys.path.append(parent_dir)
-
-
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 def get_aes_config():
     key = None
     iv = None

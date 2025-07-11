@@ -1,9 +1,5 @@
 """
-<<<<<<< HEAD
 DES-ECB 加密脚本-已测试√√√
-=======
-DES-ECB 加密脚本-已测试
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 
 使用方法:
     mitmdump -p 8888 -s des_ecb.py --ssl-insecure field=password key=your_key
