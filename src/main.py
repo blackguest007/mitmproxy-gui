@@ -29,11 +29,8 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # 设置窗口标题
-<<<<<<< HEAD
+
         self.setWindowTitle("mitmproxy-gui V1.0.4 Created by @LingDu")
-=======
-        self.setWindowTitle("mitmproxy-gui V1.0.3 Created by @LingDu")
->>>>>>> 003e959c53f0a3ebe65ba51c3c236e85da3c6263
 
         # 初始化属性
         self.mitm_threads = []  # 用于存储当前运行的线程
