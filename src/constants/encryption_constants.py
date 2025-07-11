@@ -9,7 +9,7 @@ class EncryptionConstants:
     HASH_ALGORITHMS = ['md5.py', 'sha1.py', 'sha256.py', 'sha384.py', 'sha512.py']  # 支持 MD5/SHA1/SHA256/SHA384/SHA512
     
     # 项目中不需要密钥的算法脚本
-    NO_KEY_ALGORITHMS = ['Base64.py', 'md5.py', 'sha1.py', 'sha256.py', 'sha384.py', 'sha512.py']  # Base64编码和哈希算法不需要密钥
+    NO_KEY_ALGORITHMS = ['Base64.py', 'base64.py','md5.py', 'sha1.py', 'sha256.py', 'sha384.py', 'sha512.py']  # Base64编码和哈希算法不需要密钥
     
     AES_KEY_LENGTHS = [16, 24, 32]  # AES 密钥长度（128/192/256位）
     DES_KEY_LENGTH = [8, 16, 24]  # DES密钥长度(8字节)，3DES密钥长度(24字节)
