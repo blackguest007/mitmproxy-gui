@@ -104,8 +104,8 @@ class PacketLogger:
                 f"方向: {direction}\n"
                 f"模式: {self.mode}\n"
                 f"字段: {field}\n"
-                f"原始值: {form_data}\n"  # 记录完整的表单数据
-                f"处理值: {field}={processed}\n"  # 记录处理后的表单数据
+                f"原始值: {original}\n"  # 记录处理前的完整表单数据
+                f"处理值: {processed}\n"  # 记录处理后的完整表单数据
                 f"{'='*50}\n\n"  # 添加两个换行符
             )
         

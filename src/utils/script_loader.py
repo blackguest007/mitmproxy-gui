@@ -354,7 +354,7 @@ class ScriptLoader:
                     return None
 
                 # 获取上游代理地址
-                upstream = f"--mode upstream:http://127.0.0.1:{self.window.upstream_input.text()or'8080'}"
+                upstream = f"--mode upstream:http://127.0.0.1:{self.window.upstream_input.text() or '8080'}"
 
                 # 获取用户输入的参数
                 field = self.encrypt_params_input.text().strip() or "password"  # 默认值为 password
@@ -397,9 +397,17 @@ class ScriptLoader:
                     print(f"脚本文件不存在: {full_script_path}")
                     return None
 
-                # 获取上游代理地址
-                upstream_port = self.window.upstream_input.text() or "8080"
-                upstream = f"--mode upstream:http://127.0.0.1:{upstream_port}"
+                # 获取上游代理地址 - Both模式需要目标服务器地址
+                target_server = self.window.upstream_input.text() or "127.0.0.1:8000"
+                
+                # 确保格式正确
+                if not target_server.startswith("http://") and not target_server.startswith("https://"):
+                    if ":" not in target_server:
+                        target_server = f"127.0.0.1:{target_server}"
+                    target_server = f"http://{target_server}"
+                
+                # 构建upstream参数
+                upstream = f"--mode upstream:{target_server}"
 
                 # 获取用户输入的参数
                 field = self.encrypt_params_input.text().strip() or "password"  # 默认值为 password

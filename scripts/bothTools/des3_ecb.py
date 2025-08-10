@@ -1,337 +1,114 @@
 """
-3DES ECB 双向加解密脚本-已测试
+3DES-ECB 双向加解密脚本-已测试
 
 使用方法:
-    加密: mitmdump -p 9999 -s des3_ecb.py --ssl-insecure field=password key=your_key
-    解密: mitmdump -p 8888 -s des3_ecb.py --mode upstream:http://127.0.0.1:8080 --ssl-insecure field=password key=your_key
+    解密模式: mitmdump -p 8888 -s des3_ecb.py --mode upstream:http://127.0.0.1:8080 --ssl-insecure field=password key=your_key
 
 参数说明:
     field: 需要处理的字段，多个字段用逗号分隔
-    key: 3DES密钥
+    key: 3DES密钥，长度必须为16或24字节
 
 注意事项:
     1. 支持 application/json 和 application/x-www-form-urlencoded 格式
-    2. 支持单个或多个字段解密
-    3. 3DES密钥必须是24字节长度
-    4. 解密前的数据需要是Base64编码
+    2. 支持单个或多个字段处理
+    3. both模式：请求解密，响应加密（实现双向代理链）
 """
 
-import sys
-from mitmproxy import http
-from mitmproxy.script import concurrent
-import json
-from urllib.parse import parse_qs, urlencode, quote
-import threading
-import queue
-import time
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
 import os
-from datetime import datetime
-from Crypto.Cipher import DES3
+import sys
 import base64
-from Crypto.Util.Padding import unpad, pad
-from typing import List
+from typing import Dict, Any
+from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad, unpad
 
-def get_decryption_config():
-    """从命令行参数获取解密配置"""
-    all_args = sys.argv
-    decryption_fields = []
-    des3_key = None
+# 添加父目录到 Python 路径
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
 
-    for arg in all_args:
-        if arg.startswith('field='):
-            fields = arg.replace('field=', '')
-            decryption_fields = [field.strip() for field in fields.split(',') if field.strip()]
-        elif arg.startswith('key='):
-            des3_key = arg.replace('key=', '').strip()
+from common.utils import get_processing_fields
+from common.both_interceptor import BothInterceptor
 
-    return decryption_fields, des3_key
-
-def get_mode():
+def get_mode() -> str:
     """获取运行模式"""
-    all_args = sys.argv
-    mode = 'encrypt'  # 默认模式为加密
-    for arg in all_args:
+    for arg in sys.argv:
         if arg == '--mode' or arg.startswith('--mode='):
-            mode = 'decrypt'  # 有--mode参数就是解密模式
-            break
-    return mode
+            return 'decrypt'  # 有--mode参数就是解密模式
+    return 'encrypt'  # 默认模式为加密
 
-# 获取配置
-decryption_fields, des3_key = get_decryption_config()
-mode = get_mode()
+def get_des3_config():
+    """获取3DES配置"""
+    key = None
+    for arg in sys.argv:
+        if arg.startswith('key='):
+            key = arg.replace('key=', '').strip()
+    
+    if not key:
+        raise ValueError("必须提供key参数")
+    
+    key_bytes = key.encode('utf-8')
+    if len(key_bytes) not in [16, 24]:
+        raise ValueError(f"无效的3DES密钥长度: {len(key_bytes)}字节，应为16或24字节")
+    
+    return key_bytes
 
-class AsyncLogger:
-    _instance = None
-    _lock = threading.Lock()
-    def __new__(cls):
-        with cls._lock:
-            if cls._instance is None:
-                cls._instance = super(AsyncLogger, cls).__new__(cls)
-                cls._instance._initialized = False
-            return cls._instance
-    def __init__(self):
-        if self._initialized:
-            return
-        with self._lock:
-            if self._initialized:
-                return
-            self.log_queue = queue.Queue()
-            self.running = True
-            self.thread = threading.Thread(target=self._process_logs, daemon=True)
-            self.thread.start()
-            self.log_dir = "logs"
-            if not os.path.exists(self.log_dir):
-                os.makedirs(self.log_dir)
-            script_name = os.path.splitext(os.path.basename(__file__))[0]
-            self.log_file = os.path.join(self.log_dir, f"both_{script_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log")
-            self._initialized = True
-            self.fields = []
-    def _process_logs(self):
-        while self.running:
-            try:
-                log_entry = self.log_queue.get_nowait()
-                if log_entry:
-                    flow, comment = log_entry
-                    with open(self.log_file, 'a', encoding='utf-8') as f:
-                        f.write(comment + '\n')
-            except queue.Empty:
-                time.sleep(0.1)
-            except Exception as e:
-                print(f"日志处理错误: {str(e)}")
-    def log(self, flow, comment):
-        try:
-            self.log_queue.put_nowait((flow, comment))
-        except queue.Full:
-            try:
-                self.log_queue.get_nowait()
-                self.log_queue.put_nowait((flow, comment))
-            except Exception as e:
-                print(f"日志队列错误: {str(e)}")
-    def stop(self):
-        self.running = False
-        if self.thread.is_alive():
-            self.thread.join()
-    def _format_log_message(self, url: str, field: str, original: str, processed: str, mode: str) -> str:
-        """格式化日志消息"""
-        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        # 尝试获取另一个模式的值
-        other_mode_value = ""
-        try:
-            if mode == 'encrypt':
-                # 如果是加密模式，尝试解密处理后的值
-                cipher = DES3.new(self.key, DES3.MODE_ECB)
-                # 从处理后的值中提取加密的字段值
-                params = parse_qs(processed)
-                decrypted_params = {}
-                for key, value in params.items():
-                    if key in self.fields:
-                        try:
-                            # 只处理需要解密的字段
-                            encrypted_data = base64.b64decode(value[0])
-                            decrypted_data = unpad(cipher.decrypt(encrypted_data), DES3.block_size)
-                            decrypted_params[key] = decrypted_data.decode('utf-8')
-                        except Exception as e:
-                            self.log(None, f"解密字段 {key} 失败: {str(e)}")
-                            decrypted_params[key] = value[0]
-                    else:
-                        # 其他字段保持原样
-                        decrypted_params[key] = value[0]
-                other_mode_value = urlencode(decrypted_params, quote_via=quote)
-            else:
-                # 如果是解密模式，尝试加密原始值
-                cipher = DES3.new(self.key, DES3.MODE_ECB)
-                # 从原始值中提取字段值
-                params = parse_qs(original)
-                encrypted_params = {}
-                for key, value in params.items():
-                    if key in self.fields:
-                        try:
-                            # 只处理需要加密的字段
-                            padded = pad(value[0].encode('utf-8'), DES3.block_size)
-                            encrypted = cipher.encrypt(padded)
-                            encrypted_params[key] = base64.b64encode(encrypted).decode('utf-8')
-                        except Exception as e:
-                            self.log(None, f"加密字段 {key} 失败: {str(e)}")
-                            encrypted_params[key] = value[0]
-                    else:
-                        # 其他字段保持原样
-                        encrypted_params[key] = value[0]
-                other_mode_value = urlencode(encrypted_params, quote_via=quote)
-        except Exception as e:
-            self.log(None, f"处理另一个模式的值失败: {str(e)}")
-
-        return (
-            f"[{timestamp}] URL: {url}\n"
-            f"模式: {mode}\n"
-            f"字段: {field}\n"
-            f"原始值: {original}\n"
-            f"加密值: {processed if mode == 'encrypt' else other_mode_value}\n"
-            f"解密值: {other_mode_value if mode == 'encrypt' else processed}\n"
-            f"{'='*50}\n"
-        )
-
-class DES3ECBBothInterceptor:
+class Des3EcbBothInterceptor(BothInterceptor):
     """3DES-ECB 双向加解密拦截器"""
     
-    def __init__(self, fields: List[str], key: str):
-        """初始化拦截器"""
-        self.decryption_fields = fields
-        self.key = key.encode('utf-8')
-        self._lock = threading.Lock()
-        self.logger = AsyncLogger()
-        self.logger.fields = fields  # 传递字段列表到logger
-        self.mode = get_mode()  # 从全局获取模式
+    def __init__(self):
+        script_name = os.path.splitext(os.path.basename(__file__))[0]
+        self.key = get_des3_config()
+        mode = get_mode()
+        
+        super().__init__(
+            script_name=script_name,
+            mode=mode,
+            processing_fields=get_processing_fields()
+        )
 
-    def process_value(self, value: str, url: str, field: str, is_request: bool = True) -> str:
+    def process_value(self, value: str, url: str, field: str, is_response: bool = False) -> str:
+        """
+        处理单个字段的值
+        Args:
+            is_response: False=请求(按mode处理), True=响应(按相反mode处理)
+        """
         try:
+            # 确定当前操作模式
+            current_mode = self.mode
+            if is_response:
+                current_mode = 'encrypt' if self.mode == 'decrypt' else 'decrypt'
+            
             cipher = DES3.new(self.key, DES3.MODE_ECB)
-            # 根据 mode 判断是加密还是解密
-            if self.mode == 'decrypt':  # 解密模式
-                encrypted_data = base64.b64decode(value)
-                decrypted_data = unpad(cipher.decrypt(encrypted_data), DES3.block_size)
-                return decrypted_data.decode('utf-8')
-            else:  # 加密模式
-                padded = pad(value.encode('utf-8'), DES3.block_size)
-                encrypted = cipher.encrypt(padded)
-                return base64.b64encode(encrypted).decode('utf-8')
-        except Exception as e:
-            raise
-
-    def process_json_data(self, json_data: dict, url: str = None) -> tuple[dict, bool]:
-        """处理JSON数据"""
-        modified = False
-        new_data = {}
-
-        # 保持所有原始字段
-        for key, value in json_data.items():
-            if key in self.decryption_fields:
-                try:
-                    # 只处理需要加解密的字段
-                    if self.mode == 'encrypt':
-                        # 加密时，将value转换为JSON字符串
-                        value_str = json.dumps(value, separators=(',', ':'), ensure_ascii=False)
-                        result = self.process_value(value_str, url, key)
-                        new_data[key] = result
-                    else:
-                        # 解密时，先解密，再解析JSON
-                        value_str = str(value)
-                        result = self.process_value(value_str, url, key)
-                        try:
-                            # 解析JSON字符串
-                            new_data[key] = json.loads(result)
-                        except json.JSONDecodeError:
-                            # 如果不是JSON字符串，保持原样
-                            new_data[key] = result
-                    modified = True
-                except Exception as e:
-                    # 如果处理失败，保持原值
-                    new_data[key] = value
-            else:
-                # 其他字段保持原样
-                new_data[key] = value
-
-        # 记录完整的JSON数据日志
-        if modified:
-            # 使用压缩格式的JSON
-            original_json = json.dumps(json_data, separators=(',', ':'), ensure_ascii=False)
-            processed_json = json.dumps(new_data, separators=(',', ':'), ensure_ascii=False)
             
-            # 记录完整的请求数据
-            self.logger.log(url, self.logger._format_log_message(
-                url,
-                ','.join(self.decryption_fields),
-                original_json,  # 使用原始JSON数据
-                processed_json,  # 使用处理后的JSON数据
-                self.mode
-            ))
-
-        return new_data, modified
-
-    def process_form_data(self, form_data: str, url: str = None) -> tuple[str, bool]:
-        """处理表单数据"""
-        params = parse_qs(form_data, keep_blank_values=True)
-        modified = False
-        new_params = {}
-
-        for key, value in params.items():
-            if key in self.decryption_fields:
+            if current_mode == 'decrypt':
+                # 解密逻辑
+                if not value or not value.strip():
+                    return value
                 try:
-                    # 只处理需要加解密的字段
-                    if self.mode == 'encrypt':
-                        new_params[key] = self.process_value(value[0], url, key)
-                    else:
-                        new_params[key] = self.process_value(value[0], url, key)
-                    modified = True
-                except Exception as e:
-                    self.logger.log(url, f"处理表单字段 {key} 失败: {str(e)}")
-                    new_params[key] = value[0]  # 如果处理失败，保持原值
+                    encrypted_data = base64.b64decode(value)
+                    if len(encrypted_data) % DES3.block_size != 0:
+                        return value
+                    decrypted_data = unpad(cipher.decrypt(encrypted_data), DES3.block_size)
+                    return decrypted_data.decode('utf-8')
+                except:
+                    return value
             else:
-                # 其他字段保持原样
-                new_params[key] = value[0]
-
-        # 记录完整的表单数据日志
-        if modified:
-            self.logger.log(url, self.logger._format_log_message(
-                url,
-                ','.join(self.decryption_fields),
-                form_data,
-                urlencode(new_params, quote_via=quote),
-                self.mode
-            ))
-
-        return urlencode(new_params, quote_via=quote), modified
-
-    @concurrent
-    def request(self, flow: http.HTTPFlow) -> None:
-        """处理请求"""
-        try:
-            content_type = flow.request.headers.get("Content-Type", "")
-            
-            with self._lock:
-                modified = False
+                # 加密逻辑
                 try:
-                    # 尝试解码请求内容
-                    original_content = flow.request.content.decode('utf-8')
-                except UnicodeDecodeError:
-                    # 如果解码失败，可能是二进制数据，直接返回
-                    return
-                
-                processed_content = original_content
-
-                if "application/json" in content_type:
-                    try:
-                        json_data = json.loads(original_content)
-                        json_data, modified = self.process_json_data(json_data, flow.request.url)
-                        if modified:
-                            processed_content = json.dumps(json_data, separators=(',', ':'), ensure_ascii=False)
-                            flow.request.content = processed_content.encode('utf-8')
-                    except json.JSONDecodeError as e:
-                        self.logger.log(None, f"JSON解析失败: {str(e)}")
-                        return
-
-                elif "application/x-www-form-urlencoded" in content_type:
-                    try:
-                        processed_content, modified = self.process_form_data(original_content, flow.request.url)
-                        if modified:
-                            flow.request.content = processed_content.encode('utf-8')
-                    except Exception as e:
-                        self.logger.log(None, f"处理表单数据失败: {str(e)}")
-                        return
-
-                if modified:
-                    flow.request.headers["Content-Length"] = str(len(flow.request.content))
-
+                    value = value.strip('"').strip("'")
+                    padded = pad(value.encode('utf-8'), DES3.block_size)
+                    encrypted = cipher.encrypt(padded)
+                    return base64.b64encode(encrypted).decode('utf-8')
+                except:
+                    return value
+                    
         except Exception as e:
-            self.logger.log(None, f"处理请求失败: {str(e)}")
-            import traceback
-            self.logger.log(None, f"错误详情:\n{traceback.format_exc()}")
+            self.logger.log(None, f"处理失败: {str(e)}")
+            return value
 
-    def done(self):
-        """清理资源"""
-        self.logger.stop()
+# 创建拦截器实例
+interceptor = Des3EcbBothInterceptor()
 
 # 注册插件
-addons = [DES3ECBBothInterceptor(decryption_fields, des3_key)] 
+addons = [interceptor] 

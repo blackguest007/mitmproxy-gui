@@ -1,0 +1,244 @@
+[2025-08-10 17:09:33.407] #1 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: both
+字段: password
+原始值: m=6&username=admin&password=cl81DNo%2Ba3zKiFZnX7J/DY/bdnDp2jIOLBVrcoTDCXYtD0HUaZx0RrdeG0DxEDeU5zeMx2RY1LeHQVDrc2GHbXKXaI1IN%2BZQQw/2W7HNztEMmsQY0%2Bo3/bSUnJ23yw5kmBpJgIkKukQ6tsHbgMsigshViaHNTWYtLxMavfzsH0c=
+处理值: m=6&username=admin&password=admin
+==================================================
+
+[2025-08-10 17:09:33.627] #1 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: both
+字段: password
+原始值: m=6&username=admin&password=admin
+处理值: m=6&username=admin&password=Xtv5Fn10zProbydR3Lj%2BhA46Zx4o3JCSaPcJMMw3OG8PvxALMqzfvM5r0RT5DYvilr31YMD8hWLUlZqqA2Vi6vNJgnCnPPmJwwKEc%2BCD5ZSwVriSY2nYdERYyodOHExKSF2doXKw6DSb7pf4JLN2hVG1ZIwHRWpAWaRc%2Bxqrkn8%3D
+==================================================
+
+[2025-08-10 17:09:33.629] #2 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:09:33.643] #2 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:09:39.115] #1 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: both
+字段: password
+原始值: m=6&username=admin&password=admin
+处理值: m=6&username=admin&password=YpL9m6LpDkv4fEQEhPq0o83dS0PoZdysGIgf0fvSR9UgM1Z7zw%2FFcQjlvk9%2BI%2B24kTQzUO3LBnooWG1S%2BUh2%2FXpfFbM9e40yGeugmUz22SfPux6FV82%2FnUJYhPEQItjNHsIMMNLL25bylR4OKIGkNQQ9KOcPuMtF3Shmw%2BWhABg%3D
+==================================================
+
+[2025-08-10 17:09:39.150] #2 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:13:07.555] #3 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: both
+字段: password
+原始值: {"m":"6","username":"admin","password":"admin"}
+处理值: {"m":"6","username":"admin","password":"njQs%2F1rdX1veoGEy%2FpDErz9J01%2Br6TdoJRatRfqunaXdqM0zPwpdMFWI%2ByS%2FpLHxuiGnwZ0b9W14zG8XgYtWFE2iRegcvoKxAy8cIQqaQkejsHZGMn%2B7QdS164QGo7WeMTHVx1xzKsAsjYtq8rlp2jU%2FpS9MSaZ0%2F28pJ1wY99U%3D"}
+==================================================
+
+[2025-08-10 17:13:07.563] #4 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login failed!
+处理值: Login failed!
+==================================================
+
+[2025-08-10 17:13:08.048] #3 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: both
+字段: password
+原始值: {"m":"6","username":"admin","password":"admin"}
+处理值: {"m":"6","username":"admin","password":"VoRNy49zLBv1rdjmVr3fjuBdhvztGMB4to%2FKyT%2B%2B6umhf9ZLD8TKMhm9NdKPP1C7%2Blb5fWPPfF7aqvhCHSruGmXqOa8isNPO2JWoXhUwc4R84lJ%2F02BFkT61wwvPZlTnRnHg9bvj1caIGJyBhoGb2DVEXQmgn3yRhN42SW60ArQ%3D"}
+==================================================
+
+[2025-08-10 17:13:08.076] #4 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login failed!
+处理值: Login failed!
+==================================================
+
+[2025-08-10 17:15:11.411] #5 URL: ://ads.mozilla.org
+方向: 响应
+模式: both
+字段: response
+原始值: Cannot connect to ads.mozilla.org:443: [WinError 121] 信号灯超时时间已到 If you plan to redirect requests away from this server, consider setting `connection_strategy` to `lazy` to suppress early connections.
+处理值: Cannot connect to ads.mozilla.org:443: [WinError 121] 信号灯超时时间已到 If you plan to redirect requests away from this server, consider setting `connection_strategy` to `lazy` to suppress early connections.
+==================================================
+
+[2025-08-10 17:15:11.432] #3 URL: https://ads.mozilla.org/v1/ads
+方向: 响应
+模式: both
+字段: response
+原始值: <html><head><title>Burp Suite Professional</title>
+<style type="text/css">
+body { background: #dedede; font-family: Arial, sans-serif; color: #404042; -webkit-font-smoothing: antialiased; }
+#container { padding: 0 15px; margin: 10px auto; background-color: #ffffff; }
+a { word-wrap: break-word; }
+a:link, a:visited { color: #e06228; text-decoration: none; }
+a:hover, a:active { color: #404042; text-decoration: underline; }
+h1 { font-size: 1.6em; line-height: 1.2em; font-weight: normal; color: #404042; }
+h2 { font-size: 1.3em; line-height: 1.2em; padding: 0; margin: 0.8em 0 0.3em 0; font-weight: normal; color: #404042;}
+.title, .navbar { color: #ffffff; background: #e06228; padding: 10px 15px; margin: 0 -15px 10px -15px; overflow: hidden; }
+.title h1 { color: #ffffff; padding: 0; margin: 0; font-size: 1.8em; }
+div.navbar {position: absolute; top: 18px; right: 25px;}
+div.navbar ul {list-style-type: none; margin: 0; padding: 0;}
+div.navbar li {display: inline; margin-left: 20px;}
+div.navbar a {color: white; padding: 10px}
+div.navbar a:hover, div.navbar a:active {text-decoration: none; background: #404042;}
+</style>
+</head>
+<body>
+<div id="container">
+<div class="title"><h1>Burp Suite Professional</h1></div>
+<h1>Error</h1><p>Failed&#32;to&#32;connect&#32;to&#32;127&#46;0&#46;0&#46;1&#58;9999</p>
+<p>&nbsp;</p>
+</div>
+</body>
+</html>
+
+处理值: <html><head><title>Burp Suite Professional</title>
+<style type="text/css">
+body { background: #dedede; font-family: Arial, sans-serif; color: #404042; -webkit-font-smoothing: antialiased; }
+#container { padding: 0 15px; margin: 10px auto; background-color: #ffffff; }
+a { word-wrap: break-word; }
+a:link, a:visited { color: #e06228; text-decoration: none; }
+a:hover, a:active { color: #404042; text-decoration: underline; }
+h1 { font-size: 1.6em; line-height: 1.2em; font-weight: normal; color: #404042; }
+h2 { font-size: 1.3em; line-height: 1.2em; padding: 0; margin: 0.8em 0 0.3em 0; font-weight: normal; color: #404042;}
+.title, .navbar { color: #ffffff; background: #e06228; padding: 10px 15px; margin: 0 -15px 10px -15px; overflow: hidden; }
+.title h1 { color: #ffffff; padding: 0; margin: 0; font-size: 1.8em; }
+div.navbar {position: absolute; top: 18px; right: 25px;}
+div.navbar ul {list-style-type: none; margin: 0; padding: 0;}
+div.navbar li {display: inline; margin-left: 20px;}
+div.navbar a {color: white; padding: 10px}
+div.navbar a:hover, div.navbar a:active {text-decoration: none; background: #404042;}
+</style>
+</head>
+<body>
+<div id="container">
+<div class="title"><h1>Burp Suite Professional</h1></div>
+<h1>Error</h1><p>Failed&#32;to&#32;connect&#32;to&#32;127&#46;0&#46;0&#46;1&#58;9999</p>
+<p>&nbsp;</p>
+</div>
+</body>
+</html>
+
+==================================================
+
+[2025-08-10 17:20:12.717] #6 URL: https://token.services.mozilla.com/1.0/sync/1.5
+方向: 响应
+模式: both
+字段: response
+原始值: {"id":"eyJub2RlIjogImh0dHBzOi8vc3luYy0xLXVzLXdlc3QxLWcuc3luYy5zZXJ2aWNlcy5tb3ppbGxhLmNvbSIsICJmeGFfa2lkIjogIjE2NjQyMDQ3OTgwMzItMXpVU1pCZWprejlCeEhENmh4M0xXUSIsICJmeGFfdWlkIjogImZhYjRlYTlkZjY0YzRiOGJiNzZiYTljNzY2NWRiYzRmIiwgImhhc2hlZF9kZXZpY2VfaWQiOiAiZmU1MTYzNzA2Yzc4N2ZjMjZiNmMzMGMxMGYyOTRkYzciLCAiaGFzaGVkX2Z4YV91aWQiOiAiMjE4ZjRiNGU2MmJhNjU2ZTIyYWE5NmNhODJmOGRkOTQiLCAidG9rZW5zZXJ2ZXJfb3JpZ2luIjogInJ1c3QiLCAiZXhwaXJlcyI6IDE3NTQ4MjEyMTMsICJ1aWQiOiAxOTk3NTE4MTgsICJzYWx0IjogIjBiMzMxZCJ9Ikcug86gW5SB08GRKEwbbhHD7F2xUXkH5Nm2BJ3ytO4=","key":"YfA7RCv86ntOVNll5syXGaMogeIbWnEwpHuMQci4s_o=","uid":199751818,"api_endpoint":"https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818","duration":3600,"hashed_fxa_uid":"218f4b4e62ba656e22aa96ca82f8dd94","hashalg":"sha256","node_type":"spanner"}
+处理值: {"id":"eyJub2RlIjogImh0dHBzOi8vc3luYy0xLXVzLXdlc3QxLWcuc3luYy5zZXJ2aWNlcy5tb3ppbGxhLmNvbSIsICJmeGFfa2lkIjogIjE2NjQyMDQ3OTgwMzItMXpVU1pCZWprejlCeEhENmh4M0xXUSIsICJmeGFfdWlkIjogImZhYjRlYTlkZjY0YzRiOGJiNzZiYTljNzY2NWRiYzRmIiwgImhhc2hlZF9kZXZpY2VfaWQiOiAiZmU1MTYzNzA2Yzc4N2ZjMjZiNmMzMGMxMGYyOTRkYzciLCAiaGFzaGVkX2Z4YV91aWQiOiAiMjE4ZjRiNGU2MmJhNjU2ZTIyYWE5NmNhODJmOGRkOTQiLCAidG9rZW5zZXJ2ZXJfb3JpZ2luIjogInJ1c3QiLCAiZXhwaXJlcyI6IDE3NTQ4MjEyMTMsICJ1aWQiOiAxOTk3NTE4MTgsICJzYWx0IjogIjBiMzMxZCJ9Ikcug86gW5SB08GRKEwbbhHD7F2xUXkH5Nm2BJ3ytO4=","key":"YfA7RCv86ntOVNll5syXGaMogeIbWnEwpHuMQci4s_o=","uid":199751818,"api_endpoint":"https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818","duration":3600,"hashed_fxa_uid":"218f4b4e62ba656e22aa96ca82f8dd94","hashalg":"sha256","node_type":"spanner"}
+==================================================
+
+[2025-08-10 17:20:12.738] #4 URL: https://token.services.mozilla.com/1.0/sync/1.5
+方向: 响应
+模式: both
+字段: response
+原始值: {"id":"eyJub2RlIjogImh0dHBzOi8vc3luYy0xLXVzLXdlc3QxLWcuc3luYy5zZXJ2aWNlcy5tb3ppbGxhLmNvbSIsICJmeGFfa2lkIjogIjE2NjQyMDQ3OTgwMzItMXpVU1pCZWprejlCeEhENmh4M0xXUSIsICJmeGFfdWlkIjogImZhYjRlYTlkZjY0YzRiOGJiNzZiYTljNzY2NWRiYzRmIiwgImhhc2hlZF9kZXZpY2VfaWQiOiAiZmU1MTYzNzA2Yzc4N2ZjMjZiNmMzMGMxMGYyOTRkYzciLCAiaGFzaGVkX2Z4YV91aWQiOiAiMjE4ZjRiNGU2MmJhNjU2ZTIyYWE5NmNhODJmOGRkOTQiLCAidG9rZW5zZXJ2ZXJfb3JpZ2luIjogInJ1c3QiLCAiZXhwaXJlcyI6IDE3NTQ4MjEyMTMsICJ1aWQiOiAxOTk3NTE4MTgsICJzYWx0IjogIjBiMzMxZCJ9Ikcug86gW5SB08GRKEwbbhHD7F2xUXkH5Nm2BJ3ytO4=","key":"YfA7RCv86ntOVNll5syXGaMogeIbWnEwpHuMQci4s_o=","uid":199751818,"api_endpoint":"https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818","duration":3600,"hashed_fxa_uid":"218f4b4e62ba656e22aa96ca82f8dd94","hashalg":"sha256","node_type":"spanner"}
+处理值: {"id":"eyJub2RlIjogImh0dHBzOi8vc3luYy0xLXVzLXdlc3QxLWcuc3luYy5zZXJ2aWNlcy5tb3ppbGxhLmNvbSIsICJmeGFfa2lkIjogIjE2NjQyMDQ3OTgwMzItMXpVU1pCZWprejlCeEhENmh4M0xXUSIsICJmeGFfdWlkIjogImZhYjRlYTlkZjY0YzRiOGJiNzZiYTljNzY2NWRiYzRmIiwgImhhc2hlZF9kZXZpY2VfaWQiOiAiZmU1MTYzNzA2Yzc4N2ZjMjZiNmMzMGMxMGYyOTRkYzciLCAiaGFzaGVkX2Z4YV91aWQiOiAiMjE4ZjRiNGU2MmJhNjU2ZTIyYWE5NmNhODJmOGRkOTQiLCAidG9rZW5zZXJ2ZXJfb3JpZ2luIjogInJ1c3QiLCAiZXhwaXJlcyI6IDE3NTQ4MjEyMTMsICJ1aWQiOiAxOTk3NTE4MTgsICJzYWx0IjogIjBiMzMxZCJ9Ikcug86gW5SB08GRKEwbbhHD7F2xUXkH5Nm2BJ3ytO4=","key":"YfA7RCv86ntOVNll5syXGaMogeIbWnEwpHuMQci4s_o=","uid":199751818,"api_endpoint":"https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818","duration":3600,"hashed_fxa_uid":"218f4b4e62ba656e22aa96ca82f8dd94","hashalg":"sha256","node_type":"spanner"}
+==================================================
+
+[2025-08-10 17:20:13.640] #7 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/info/collections
+方向: 响应
+模式: both
+字段: response
+原始值: {"extension-storage":1676093893.43,"history":1754814012.68,"forms":1752378084.02,"addons":1750912478.07,"bookmarks":1750685971.73,"meta":1664204945.23,"clients":1754810407.37,"tabs":1754814012.3,"prefs":1754742918.66,"passwords":1752225222.63,"crypto":1664204912.93}
+处理值: {"extension-storage":1676093893.43,"history":1754814012.68,"forms":1752378084.02,"addons":1750912478.07,"bookmarks":1750685971.73,"meta":1664204945.23,"clients":1754810407.37,"tabs":1754814012.3,"prefs":1754742918.66,"passwords":1752225222.63,"crypto":1664204912.93}
+==================================================
+
+[2025-08-10 17:20:13.704] #5 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/info/collections
+方向: 响应
+模式: both
+字段: response
+原始值: {"extension-storage":1676093893.43,"history":1754814012.68,"forms":1752378084.02,"addons":1750912478.07,"bookmarks":1750685971.73,"meta":1664204945.23,"clients":1754810407.37,"tabs":1754814012.3,"prefs":1754742918.66,"passwords":1752225222.63,"crypto":1664204912.93}
+处理值: {"extension-storage":1676093893.43,"history":1754814012.68,"forms":1752378084.02,"addons":1750912478.07,"bookmarks":1750685971.73,"meta":1664204945.23,"clients":1754810407.37,"tabs":1754814012.3,"prefs":1754742918.66,"passwords":1752225222.63,"crypto":1664204912.93}
+==================================================
+
+[2025-08-10 17:20:14.002] #8 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/info/configuration
+方向: 响应
+模式: both
+字段: response
+原始值: {"max_post_bytes":2097152,"max_post_records":100,"max_record_payload_bytes":2097152,"max_request_bytes":2101248,"max_total_bytes":96000000,"max_total_records":1664,"max_quota_limit":2097152000}
+处理值: {"max_post_bytes":2097152,"max_post_records":100,"max_record_payload_bytes":2097152,"max_request_bytes":2101248,"max_total_bytes":96000000,"max_total_records":1664,"max_quota_limit":2097152000}
+==================================================
+
+[2025-08-10 17:20:14.018] #6 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/info/configuration
+方向: 响应
+模式: both
+字段: response
+原始值: {"max_post_bytes":2097152,"max_post_records":100,"max_record_payload_bytes":2097152,"max_request_bytes":2101248,"max_total_bytes":96000000,"max_total_records":1664,"max_quota_limit":2097152000}
+处理值: {"max_post_bytes":2097152,"max_post_records":100,"max_record_payload_bytes":2097152,"max_request_bytes":2101248,"max_total_bytes":96000000,"max_total_records":1664,"max_quota_limit":2097152000}
+==================================================
+
+[2025-08-10 17:20:14.459] #9 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/storage/clients?full=1&limit=1000
+方向: 响应
+模式: both
+字段: response
+原始值: [{"id":"emWn4VbJScaH","modified":1754810407.37,"payload":"{\"ciphertext\":\"O/ys6nFI2gDpOTtjomiHub4Fy+u1Vp3M2oJ9EBKGFuTwCGhjNiMcmrPZmxQbmR8+Iid5XEAf2UJXYw2TodE3SwPzn/AH/fj5Gn18M+teabMwfRn54ltrJ2S6FdYTpCAKphOEoUwHeNGAVU68w4orhV3KwVF2csLkeGR93VlvoByca8CWqEYkZD1oWw3U8nW3GEBL56AnPwSGoP12CwTe2oIerHoWQ9S3fKVMcyOH4zst9A+41LyV+1VtUD9XrvYuDPkq+Y8SdNp4tMi+1wW7weDm0bw5TlCuTYXB99aYjEWsGJQ08aA1zp83kSbtscFLwE9htk8Izm0zjIf41vav0O9J9IE0JS+2unXVoEBnAi0=\",\"IV\":\"gYhzTkIdhjNKSWVtMW+nsQ==\",\"hmac\":\"bae10a42d6cf3c54fba39a73e3c3b71ec32f784c3fb6a84d030fe383a04b671b\"}"}]
+处理值: [{"id":"emWn4VbJScaH","modified":1754810407.37,"payload":"{\"ciphertext\":\"O/ys6nFI2gDpOTtjomiHub4Fy+u1Vp3M2oJ9EBKGFuTwCGhjNiMcmrPZmxQbmR8+Iid5XEAf2UJXYw2TodE3SwPzn/AH/fj5Gn18M+teabMwfRn54ltrJ2S6FdYTpCAKphOEoUwHeNGAVU68w4orhV3KwVF2csLkeGR93VlvoByca8CWqEYkZD1oWw3U8nW3GEBL56AnPwSGoP12CwTe2oIerHoWQ9S3fKVMcyOH4zst9A+41LyV+1VtUD9XrvYuDPkq+Y8SdNp4tMi+1wW7weDm0bw5TlCuTYXB99aYjEWsGJQ08aA1zp83kSbtscFLwE9htk8Izm0zjIf41vav0O9J9IE0JS+2unXVoEBnAi0=\",\"IV\":\"gYhzTkIdhjNKSWVtMW+nsQ==\",\"hmac\":\"bae10a42d6cf3c54fba39a73e3c3b71ec32f784c3fb6a84d030fe383a04b671b\"}"}]
+==================================================
+
+[2025-08-10 17:20:14.477] #7 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/storage/clients?full=1&limit=1000
+方向: 响应
+模式: both
+字段: response
+原始值: [{"id":"emWn4VbJScaH","modified":1754810407.37,"payload":"{\"ciphertext\":\"O/ys6nFI2gDpOTtjomiHub4Fy+u1Vp3M2oJ9EBKGFuTwCGhjNiMcmrPZmxQbmR8+Iid5XEAf2UJXYw2TodE3SwPzn/AH/fj5Gn18M+teabMwfRn54ltrJ2S6FdYTpCAKphOEoUwHeNGAVU68w4orhV3KwVF2csLkeGR93VlvoByca8CWqEYkZD1oWw3U8nW3GEBL56AnPwSGoP12CwTe2oIerHoWQ9S3fKVMcyOH4zst9A+41LyV+1VtUD9XrvYuDPkq+Y8SdNp4tMi+1wW7weDm0bw5TlCuTYXB99aYjEWsGJQ08aA1zp83kSbtscFLwE9htk8Izm0zjIf41vav0O9J9IE0JS+2unXVoEBnAi0=\",\"IV\":\"gYhzTkIdhjNKSWVtMW+nsQ==\",\"hmac\":\"bae10a42d6cf3c54fba39a73e3c3b71ec32f784c3fb6a84d030fe383a04b671b\"}"}]
+处理值: [{"id":"emWn4VbJScaH","modified":1754810407.37,"payload":"{\"ciphertext\":\"O/ys6nFI2gDpOTtjomiHub4Fy+u1Vp3M2oJ9EBKGFuTwCGhjNiMcmrPZmxQbmR8+Iid5XEAf2UJXYw2TodE3SwPzn/AH/fj5Gn18M+teabMwfRn54ltrJ2S6FdYTpCAKphOEoUwHeNGAVU68w4orhV3KwVF2csLkeGR93VlvoByca8CWqEYkZD1oWw3U8nW3GEBL56AnPwSGoP12CwTe2oIerHoWQ9S3fKVMcyOH4zst9A+41LyV+1VtUD9XrvYuDPkq+Y8SdNp4tMi+1wW7weDm0bw5TlCuTYXB99aYjEWsGJQ08aA1zp83kSbtscFLwE9htk8Izm0zjIf41vav0O9J9IE0JS+2unXVoEBnAi0=\",\"IV\":\"gYhzTkIdhjNKSWVtMW+nsQ==\",\"hmac\":\"bae10a42d6cf3c54fba39a73e3c3b71ec32f784c3fb6a84d030fe383a04b671b\"}"}]
+==================================================
+
+[2025-08-10 17:20:14.884] #10 URL: https://api.accounts.firefox.com/v1/account/devices?filterIdleDevicesTimestamp=1753003214488
+方向: 响应
+模式: both
+字段: response
+原始值: [{"id":"a7fe1ba0a4d37bc826843d803c5759ae","isCurrentDevice":true,"lastAccessTime":1754817615581,"location":{},"name":"15484 在 LingDu 上使用的 Firefox","type":"desktop","pushCallback":"https://updates.push.services.mozilla.com/wpush/v1/gAAAAABoWDYkPGkUvkYoAimx4MLJv1If9on2oy8pkvxzpVp-5ykIl1iIrXI7w-Jk56QDBS3tdt3gr8FLrgDe4uNBDsiGqqC-z_PNC0jUYQGpZosGtM9YwbKG9PwgQS0Qj10o1Z0exe5c","pushPublicKey":"BGNmwmvymZM_Ink-en3kzC2lSjLwgC_jGxLJKlX66L4trpSlpKSAPTb8HHbQzpOJSnc1dlhGQdLl0UbimwTkTYo","pushAuthKey":"gcZy5q00GOJ5mCgpCKRG-w","pushEndpointExpired":false,"availableCommands":{"https://identity.mozilla.com/cmd/open-uri":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"6THrVO2wv9MTTglmZioOmA==\",\"hmac\":\"7c88d0604eb49eb173dfaad2ff02e8705ce205ea0b47e59b682305402b09d271\",\"ciphertext\":\"aisoqqsBoApjGCmrLaHlcs5UZ2vhw0e7TmpxajanQ9V/aOcoIbCR5bX3oCvjXr4bdnC8BEzqvF4aX0y5f0PjHmlU9Qbugjy1VLOwinrnI+Yuc6BiEdg7WuWmvzkPzozOlfzM1ayfNq3UNnnh3ThQSx+owJ84xhtaq14TG13ahPnbfVBRdjmYJn5beMVD8GI5\"}","https://identity.mozilla.com/cmd/close-uri/v1":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"acUfp3geJsjfGGy4bknLMw==\",\"hmac\":\"6b3c005c7a6a10fbf74e1532b7dfbce54e0e6426da7b4b7ae1dc85d7e39f0d4e\",\"ciphertext\":\"BNlNBYbqRTZfQRgpVcJ/Cg4tMAJ3sTqIxC0ygD1juK3d/yKbcQ0cZN2xYWZXB65VlhaQQj1HFCPgGCFranjKxK6j9aVdbRlOHHa3XYhUpT5ZxYL/Xs9+cvzawC7Gl/RIfB5ksTr2xDpnydgmQirN79hb8jQ1rC9zhhccFu2idvaSXCjWrNb3YsS8VIHFsTTS\"}"},"lastAccessTimeFormatted":"几秒前"}]
+处理值: [{"id":"a7fe1ba0a4d37bc826843d803c5759ae","isCurrentDevice":true,"lastAccessTime":1754817615581,"location":{},"name":"15484 在 LingDu 上使用的 Firefox","type":"desktop","pushCallback":"https://updates.push.services.mozilla.com/wpush/v1/gAAAAABoWDYkPGkUvkYoAimx4MLJv1If9on2oy8pkvxzpVp-5ykIl1iIrXI7w-Jk56QDBS3tdt3gr8FLrgDe4uNBDsiGqqC-z_PNC0jUYQGpZosGtM9YwbKG9PwgQS0Qj10o1Z0exe5c","pushPublicKey":"BGNmwmvymZM_Ink-en3kzC2lSjLwgC_jGxLJKlX66L4trpSlpKSAPTb8HHbQzpOJSnc1dlhGQdLl0UbimwTkTYo","pushAuthKey":"gcZy5q00GOJ5mCgpCKRG-w","pushEndpointExpired":false,"availableCommands":{"https://identity.mozilla.com/cmd/open-uri":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"6THrVO2wv9MTTglmZioOmA==\",\"hmac\":\"7c88d0604eb49eb173dfaad2ff02e8705ce205ea0b47e59b682305402b09d271\",\"ciphertext\":\"aisoqqsBoApjGCmrLaHlcs5UZ2vhw0e7TmpxajanQ9V/aOcoIbCR5bX3oCvjXr4bdnC8BEzqvF4aX0y5f0PjHmlU9Qbugjy1VLOwinrnI+Yuc6BiEdg7WuWmvzkPzozOlfzM1ayfNq3UNnnh3ThQSx+owJ84xhtaq14TG13ahPnbfVBRdjmYJn5beMVD8GI5\"}","https://identity.mozilla.com/cmd/close-uri/v1":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"acUfp3geJsjfGGy4bknLMw==\",\"hmac\":\"6b3c005c7a6a10fbf74e1532b7dfbce54e0e6426da7b4b7ae1dc85d7e39f0d4e\",\"ciphertext\":\"BNlNBYbqRTZfQRgpVcJ/Cg4tMAJ3sTqIxC0ygD1juK3d/yKbcQ0cZN2xYWZXB65VlhaQQj1HFCPgGCFranjKxK6j9aVdbRlOHHa3XYhUpT5ZxYL/Xs9+cvzawC7Gl/RIfB5ksTr2xDpnydgmQirN79hb8jQ1rC9zhhccFu2idvaSXCjWrNb3YsS8VIHFsTTS\"}"},"lastAccessTimeFormatted":"几秒前"}]
+==================================================
+
+[2025-08-10 17:20:14.912] #8 URL: https://api.accounts.firefox.com/v1/account/devices?filterIdleDevicesTimestamp=1753003214488
+方向: 响应
+模式: both
+字段: response
+原始值: [{"id":"a7fe1ba0a4d37bc826843d803c5759ae","isCurrentDevice":true,"lastAccessTime":1754817615581,"location":{},"name":"15484 在 LingDu 上使用的 Firefox","type":"desktop","pushCallback":"https://updates.push.services.mozilla.com/wpush/v1/gAAAAABoWDYkPGkUvkYoAimx4MLJv1If9on2oy8pkvxzpVp-5ykIl1iIrXI7w-Jk56QDBS3tdt3gr8FLrgDe4uNBDsiGqqC-z_PNC0jUYQGpZosGtM9YwbKG9PwgQS0Qj10o1Z0exe5c","pushPublicKey":"BGNmwmvymZM_Ink-en3kzC2lSjLwgC_jGxLJKlX66L4trpSlpKSAPTb8HHbQzpOJSnc1dlhGQdLl0UbimwTkTYo","pushAuthKey":"gcZy5q00GOJ5mCgpCKRG-w","pushEndpointExpired":false,"availableCommands":{"https://identity.mozilla.com/cmd/open-uri":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"6THrVO2wv9MTTglmZioOmA==\",\"hmac\":\"7c88d0604eb49eb173dfaad2ff02e8705ce205ea0b47e59b682305402b09d271\",\"ciphertext\":\"aisoqqsBoApjGCmrLaHlcs5UZ2vhw0e7TmpxajanQ9V/aOcoIbCR5bX3oCvjXr4bdnC8BEzqvF4aX0y5f0PjHmlU9Qbugjy1VLOwinrnI+Yuc6BiEdg7WuWmvzkPzozOlfzM1ayfNq3UNnnh3ThQSx+owJ84xhtaq14TG13ahPnbfVBRdjmYJn5beMVD8GI5\"}","https://identity.mozilla.com/cmd/close-uri/v1":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"acUfp3geJsjfGGy4bknLMw==\",\"hmac\":\"6b3c005c7a6a10fbf74e1532b7dfbce54e0e6426da7b4b7ae1dc85d7e39f0d4e\",\"ciphertext\":\"BNlNBYbqRTZfQRgpVcJ/Cg4tMAJ3sTqIxC0ygD1juK3d/yKbcQ0cZN2xYWZXB65VlhaQQj1HFCPgGCFranjKxK6j9aVdbRlOHHa3XYhUpT5ZxYL/Xs9+cvzawC7Gl/RIfB5ksTr2xDpnydgmQirN79hb8jQ1rC9zhhccFu2idvaSXCjWrNb3YsS8VIHFsTTS\"}"},"lastAccessTimeFormatted":"几秒前"}]
+处理值: [{"id":"a7fe1ba0a4d37bc826843d803c5759ae","isCurrentDevice":true,"lastAccessTime":1754817615581,"location":{},"name":"15484 在 LingDu 上使用的 Firefox","type":"desktop","pushCallback":"https://updates.push.services.mozilla.com/wpush/v1/gAAAAABoWDYkPGkUvkYoAimx4MLJv1If9on2oy8pkvxzpVp-5ykIl1iIrXI7w-Jk56QDBS3tdt3gr8FLrgDe4uNBDsiGqqC-z_PNC0jUYQGpZosGtM9YwbKG9PwgQS0Qj10o1Z0exe5c","pushPublicKey":"BGNmwmvymZM_Ink-en3kzC2lSjLwgC_jGxLJKlX66L4trpSlpKSAPTb8HHbQzpOJSnc1dlhGQdLl0UbimwTkTYo","pushAuthKey":"gcZy5q00GOJ5mCgpCKRG-w","pushEndpointExpired":false,"availableCommands":{"https://identity.mozilla.com/cmd/open-uri":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"6THrVO2wv9MTTglmZioOmA==\",\"hmac\":\"7c88d0604eb49eb173dfaad2ff02e8705ce205ea0b47e59b682305402b09d271\",\"ciphertext\":\"aisoqqsBoApjGCmrLaHlcs5UZ2vhw0e7TmpxajanQ9V/aOcoIbCR5bX3oCvjXr4bdnC8BEzqvF4aX0y5f0PjHmlU9Qbugjy1VLOwinrnI+Yuc6BiEdg7WuWmvzkPzozOlfzM1ayfNq3UNnnh3ThQSx+owJ84xhtaq14TG13ahPnbfVBRdjmYJn5beMVD8GI5\"}","https://identity.mozilla.com/cmd/close-uri/v1":"{\"kid\":\"d735126417a3933f41c470fa871dcb59\",\"IV\":\"acUfp3geJsjfGGy4bknLMw==\",\"hmac\":\"6b3c005c7a6a10fbf74e1532b7dfbce54e0e6426da7b4b7ae1dc85d7e39f0d4e\",\"ciphertext\":\"BNlNBYbqRTZfQRgpVcJ/Cg4tMAJ3sTqIxC0ygD1juK3d/yKbcQ0cZN2xYWZXB65VlhaQQj1HFCPgGCFranjKxK6j9aVdbRlOHHa3XYhUpT5ZxYL/Xs9+cvzawC7Gl/RIfB5ksTr2xDpnydgmQirN79hb8jQ1rC9zhhccFu2idvaSXCjWrNb3YsS8VIHFsTTS\"}"},"lastAccessTimeFormatted":"几秒前"}]
+==================================================
+
+[2025-08-10 17:20:15.608] #11 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/storage/tabs?batch=true&commit=true
+方向: 响应
+模式: both
+字段: response
+原始值: {"modified":1754817616.26,"success":["emWn4VbJScaH"],"failed":{}}
+处理值: {"modified":1754817616.26,"success":["emWn4VbJScaH"],"failed":{}}
+==================================================
+
+[2025-08-10 17:20:15.628] #9 URL: https://sync-1-us-west1-g.sync.services.mozilla.com/1.5/199751818/storage/tabs?batch=true&commit=true
+方向: 响应
+模式: both
+字段: response
+原始值: {"modified":1754817616.26,"success":["emWn4VbJScaH"],"failed":{}}
+处理值: {"modified":1754817616.26,"success":["emWn4VbJScaH"],"failed":{}}
+==================================================
+

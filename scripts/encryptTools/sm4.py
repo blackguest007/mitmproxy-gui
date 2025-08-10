@@ -120,24 +120,20 @@ class SM4EncryptInterceptor(BaseInterceptor):
             if not isinstance(value, str):
                 raise TypeError(f"SM4加密仅支持字符串类型，收到类型: {type(value)}")
             
-            self.logger.log(url, f"SM4加密前的值: {value}")
+            # 移除调试日志，使用标准格式化日志
             
             # 1. 原始数据 -> UTF-8编码 -> 二进制字节
             data_bytes = value.encode('utf-8')
-            self.logger.log(url, f"UTF-8编码后字节数: {len(data_bytes)}")
             
             # 2. 二进制字节 -> PKCS7填充 -> 填充后的二进制字节
             padded_data = pkcs7_pad(data_bytes)
-            self.logger.log(url, f"PKCS7填充后字节数: {len(padded_data)}")
             
             # 3. 填充后的二进制字节 -> SM4加密 -> 加密后的二进制字节
             try:
                 encrypted_bytes = sm4_cbc_encrypt(self.key, self.iv, padded_data)
-                self.logger.log(url, f"SM4加密后字节数: {len(encrypted_bytes)}")
                 
                 # 4. 只取前32字节（匹配浏览器 JS 的行为）
                 encrypted_bytes = encrypted_bytes[:32]
-                self.logger.log(url, f"截取后字节数: {len(encrypted_bytes)}")
                 
             except Exception as e:
                 self.logger.log(None, f"SM4加密错误: {str(e)}")
@@ -146,7 +142,6 @@ class SM4EncryptInterceptor(BaseInterceptor):
             # 5. 加密后的二进制字节 -> 直接 Base64 编码
             try:
                 encrypted = base64.b64encode(encrypted_bytes).decode('utf-8')
-                self.logger.log(url, f"SM4加密后: {encrypted}")
                 return encrypted
             except Exception as e:
                 self.logger.log(None, f"Base64编码错误: {str(e)}")

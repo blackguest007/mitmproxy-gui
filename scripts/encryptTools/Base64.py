@@ -58,9 +58,8 @@ def encrypt_value(self, value: str, url: str, field: str, full_json: Dict[str, A
     try:
         if not isinstance(value, str):
             value = json.dumps(value, ensure_ascii=False)
-        self.logger.log(url, f"Base64加密前的值: {value}")  # 主动记录加密前
+        # 移除调试日志，使用标准格式化日志
         encoded = base64.b64encode(value.encode('utf-8')).decode('utf-8')
-        self.logger.log(url, f"Base64加密后: {encoded}")  # 主动记录加密后
         return encoded
     except Exception as e:
         self.logger.log(None, f"Base64加密失败: {str(e)}")

@@ -1,0 +1,148 @@
+[2025-08-10 16:58:49.816] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 16:58:49.842] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 16:58:57.318] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 16:59:06.306] #2 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login failed!
+处理值: Login failed!
+==================================================
+
+[2025-08-10 17:00:05.050] #3 URL: ://ads.mozilla.org
+方向: 响应
+模式: both
+字段: response
+原始值: Cannot connect to ads.mozilla.org:443: [WinError 121] 信号灯超时时间已到 If you plan to redirect requests away from this server, consider setting `connection_strategy` to `lazy` to suppress early connections.
+处理值: Cannot connect to ads.mozilla.org:443: [WinError 121] 信号灯超时时间已到 If you plan to redirect requests away from this server, consider setting `connection_strategy` to `lazy` to suppress early connections.
+==================================================
+
+[2025-08-10 17:00:05.067] #2 URL: https://ads.mozilla.org/v1/ads
+方向: 响应
+模式: both
+字段: response
+原始值: <html><head><title>Burp Suite Professional</title>
+<style type="text/css">
+body { background: #dedede; font-family: Arial, sans-serif; color: #404042; -webkit-font-smoothing: antialiased; }
+#container { padding: 0 15px; margin: 10px auto; background-color: #ffffff; }
+a { word-wrap: break-word; }
+a:link, a:visited { color: #e06228; text-decoration: none; }
+a:hover, a:active { color: #404042; text-decoration: underline; }
+h1 { font-size: 1.6em; line-height: 1.2em; font-weight: normal; color: #404042; }
+h2 { font-size: 1.3em; line-height: 1.2em; padding: 0; margin: 0.8em 0 0.3em 0; font-weight: normal; color: #404042;}
+.title, .navbar { color: #ffffff; background: #e06228; padding: 10px 15px; margin: 0 -15px 10px -15px; overflow: hidden; }
+.title h1 { color: #ffffff; padding: 0; margin: 0; font-size: 1.8em; }
+div.navbar {position: absolute; top: 18px; right: 25px;}
+div.navbar ul {list-style-type: none; margin: 0; padding: 0;}
+div.navbar li {display: inline; margin-left: 20px;}
+div.navbar a {color: white; padding: 10px}
+div.navbar a:hover, div.navbar a:active {text-decoration: none; background: #404042;}
+</style>
+</head>
+<body>
+<div id="container">
+<div class="title"><h1>Burp Suite Professional</h1></div>
+<h1>Error</h1><p>Failed&#32;to&#32;connect&#32;to&#32;127&#46;0&#46;0&#46;1&#58;9999</p>
+<p>&nbsp;</p>
+</div>
+</body>
+</html>
+
+处理值: <html><head><title>Burp Suite Professional</title>
+<style type="text/css">
+body { background: #dedede; font-family: Arial, sans-serif; color: #404042; -webkit-font-smoothing: antialiased; }
+#container { padding: 0 15px; margin: 10px auto; background-color: #ffffff; }
+a { word-wrap: break-word; }
+a:link, a:visited { color: #e06228; text-decoration: none; }
+a:hover, a:active { color: #404042; text-decoration: underline; }
+h1 { font-size: 1.6em; line-height: 1.2em; font-weight: normal; color: #404042; }
+h2 { font-size: 1.3em; line-height: 1.2em; padding: 0; margin: 0.8em 0 0.3em 0; font-weight: normal; color: #404042;}
+.title, .navbar { color: #ffffff; background: #e06228; padding: 10px 15px; margin: 0 -15px 10px -15px; overflow: hidden; }
+.title h1 { color: #ffffff; padding: 0; margin: 0; font-size: 1.8em; }
+div.navbar {position: absolute; top: 18px; right: 25px;}
+div.navbar ul {list-style-type: none; margin: 0; padding: 0;}
+div.navbar li {display: inline; margin-left: 20px;}
+div.navbar a {color: white; padding: 10px}
+div.navbar a:hover, div.navbar a:active {text-decoration: none; background: #404042;}
+</style>
+</head>
+<body>
+<div id="container">
+<div class="title"><h1>Burp Suite Professional</h1></div>
+<h1>Error</h1><p>Failed&#32;to&#32;connect&#32;to&#32;127&#46;0&#46;0&#46;1&#58;9999</p>
+<p>&nbsp;</p>
+</div>
+</body>
+</html>
+
+==================================================
+
+[2025-08-10 17:08:31.576] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:08:31.617] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:08:51.361] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:08:51.375] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:09:02.288] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:09:02.305] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+

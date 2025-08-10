@@ -1,5 +1,5 @@
 """
-RSA 加密脚本-已测试√
+RSA 加密脚本-已测试√√√
 
 使用方法:
     mitmdump -p 8888 -s rsa.py --ssl-insecure field=password key=your_public_key
@@ -87,9 +87,12 @@ class RsaEncryptInterceptor(BaseInterceptor):
             encrypted = cipher.encrypt(data)
             # 5. Base64 编码
             encrypted_b64 = base64.b64encode(encrypted).decode('utf-8')
-            self.logger.log(None, f"加密前: {value}")
-            self.logger.log(None, f"加密后: {encrypted_b64}")
-            return encrypted_b64
+            
+            # 6. URL编码（处理+、/、=等特殊字符）
+            from urllib.parse import quote
+            encrypted_encoded = quote(encrypted_b64, safe='')
+            
+            return encrypted_encoded
         except Exception as e:
             self.logger.log(None, f"RSA加密失败: {str(e)}")
             return value
