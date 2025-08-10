@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
 
         # 设置窗口标题
 
-        self.setWindowTitle("mitmproxy-gui V1.0.4 Created by @LingDu")
+        self.setWindowTitle("mitmproxy-gui V1.0.5 Created by @LingDu")
 
         # 初始化属性
         self.mitm_threads = []  # 用于存储当前运行的线程

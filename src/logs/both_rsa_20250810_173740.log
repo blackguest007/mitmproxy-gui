@@ -1,0 +1,16 @@
+[2025-08-10 17:39:02.634] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:39:02.652] #1 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+

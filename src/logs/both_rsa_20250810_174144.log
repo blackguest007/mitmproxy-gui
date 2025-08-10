@@ -1,0 +1,32 @@
+[2025-08-10 17:42:16.574] #1 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: both
+字段: password
+原始值: m=6&username=admin&password=iqVNkUY6FqHIYJXjSR6aFR2%2BjEw%2BdY19XgJc/OJRIkUQ9Mg2k2fs6k3SH6J1aQdnQlcrt%2BwewLUKvTK6JA0fIUirmSJ3hykwbgMuqiyEeVYs7%2BCrKH0v5SWX%2Bot4IQxXEge5SQ/idRFBLP%2BPVlq6D50uO6LArrL03WEEdI4pnOY=
+处理值: m=6&username=admin&password=admin
+==================================================
+
+[2025-08-10 17:42:16.590] #1 URL: http://jsencrypt/login_check.php
+方向: 请求
+模式: both
+字段: password
+原始值: m=6&username=admin&password=admin
+处理值: m=6&username=admin&password=ChRu%2Bd7rFOuA87f1sHUpUbkDM6p%2BbSykzveBo%2BIyGeB8YqacnBu3e3calyVAj1TFl0Oe204yPgPOmNtxcPnH9kGk9qhOIxhYuaVvAo3jy0x2rbpuNT7s2ZiGw9quETo7kq%2FFssS7wAFpI1zRe9mKw%2F%2BaBJ%2BBvkR4HI0HyrDW690%3D
+==================================================
+
+[2025-08-10 17:42:16.590] #2 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
+[2025-08-10 17:42:16.611] #2 URL: http://jsencrypt/login_check.php
+方向: 响应
+模式: both
+字段: response
+原始值: Login successful!
+处理值: Login successful!
+==================================================
+
