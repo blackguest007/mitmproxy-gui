@@ -121,27 +121,25 @@ python main.py
 
 ### 启动与配置
 
-![image-20250810174125834](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810174125834.png)
+![image-20250810180821100](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810180821100.png)
 
-![image-20250810173543142](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810173543142.png
+![image-20250810180854470](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810180854470.png)
 
-![image-20250810173608362](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810173608362.png)
 
-![image-20250810173801030](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810173801030.png
 
-![image-20250810174159952](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810174159952.png)
+![image-20250810180758227](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810180758227.png)
 
 ### 案例一：RSA 双向代理解密
 
-![image-20250810173908306](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810173908306.png)
+![image-20250810180909037](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810180909037.png)
 
 
 
-![image-20250810174250170](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810174250170.png)
+![image-20250810180915202](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810180915202.png)
 
 这里之所以数据包是明文，但是响应还是显示登录成功原因是因为，burp 走了上游代理给mitmproxy-gui，加密回去了。
 
-![image-20250810174327249](C:\Users\15484\AppData\Roaming\Typora\typora-user-images\image-20250810174327249.png)
+![image-20250810180920548](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810180920548.png)
 
 
 
