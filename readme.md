@@ -139,7 +139,7 @@ python main.py
 
 这里之所以数据包是明文，但是响应还是显示登录成功原因是因为，burp 走了上游代理给mitmproxy-gui，加密回去了。
 
-![image-20250810180920548](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810180920548.png)
+![image-20250810181134726](https://sec-1316318894.cos.ap-nanjing.myqcloud.com/test/image-20250810181134726.png)
 
 
 
